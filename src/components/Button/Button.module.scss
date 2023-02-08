@@ -1,0 +1,39 @@
+.button {
+  @apply rounded-lg py-[14px] text-sm font-semibold w-full;
+}
+
+.icon {
+  --icon-size: 48px;
+  @apply rounded-full w-[var(--icon-size)] h-[var(--icon-size)] text-[calc(var(--icon-size)/2)]  font-semibold flex justify-center items-center flex-shrink-0;
+}
+
+.button__withTextUnderIcon {
+  @apply font-normal flex flex-col justify-center items-center text-sm;
+  div:last-child {
+    @apply bg-transparent mt-[6px];
+  }
+}
+
+.text__primary {
+  @apply text-sm font-semibold border-none text-purple-600;
+}
+
+.neutral {
+  @apply bg-gray-50 text-gray-600 border border-[#D0D5DD];
+}
+
+.primary {
+  @apply bg-purple-600 text-white;
+}
+
+.tonal {
+  @apply bg-purple-600 bg-opacity-20 text-purple-600 text-opacity-90;
+}
+
+.delete {
+  @apply bg-red-50 text-red-600;
+}
+
+.dark {
+  @apply bg-[#111825] text-[#D0D5DD];
+}

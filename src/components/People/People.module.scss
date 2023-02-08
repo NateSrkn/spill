@@ -1,0 +1,17 @@
+.header {
+  @apply flex justify-between;
+}
+
+.counter {
+  @apply flex gap-4 justify-center items-center;
+  .count {
+    @apply bg-none border border-[#D0D5DD] rounded-lg py-2 px-6 text-center outline-none focus:outline-none tracking-tighter proportional-nums w-full max-w-min;
+  }
+  button {
+    --icon-size: 32px;
+  }
+}
+
+.person {
+  @apply flex items-center gap-4;
+}

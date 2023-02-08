@@ -1,0 +1,22 @@
+.base {
+  @apply rounded-lg border-[#D0D5DD] border p-[12px] w-full;
+}
+.currency {
+  display: grid;
+  align-items: center;
+  @apply text-slate-400;
+  i {
+    grid-area: 1/1;
+    pointer-events: none;
+    width: min-content;
+    padding-left: 12px;
+    text-align: center;
+    font-style: normal;
+    color: inherit;
+  }
+  input {
+    grid-area: 1/1;
+    padding-left: 25px;
+    padding-right: 0;
+  }
+}

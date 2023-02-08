@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  img {
+    @apply inline-block;
+  }
+}
+html,
+body {
+  @apply font-sans;
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply min-h-screen h-full bg-[#090C13];
+}
+
+.wrapper {
+  @apply px-4 bg-gradient-to-b from-purple-200 via-purple-100 to-purple-50 rounded-br-2xl rounded-bl-2xl pb-4;
+}
+
+.grouped-block {
+  @apply flex flex-col p-4 bg-white rounded-2xl border border-[#EAECF0];
+  h3 {
+    @apply text-2xl font-medium text-[#6941C6];
+  }
+}
+
+.generic-input {
+  @apply rounded-lg border-[#D0D5DD] border p-[12px] focus:text-black text-slate-400 w-full;
+}
+
+.currency-input {
+  display: grid;
+  align-items: center;
+  @apply text-slate-400;
+  i {
+    grid-area: 1/1;
+    pointer-events: none;
+    width: min-content;
+    padding-left: 12px;
+    text-align: center;
+    font-style: normal;
+    color: inherit;
+  }
+  input {
+    grid-area: 1/1;
+    padding-left: 25px;
+    padding-right: 0;
+  }
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.tonal {
+  @apply bg-purple-600 bg-opacity-10 text-purple-600 text-opacity-90;
+}
+
+.avatar {
+  --avatar-size: 64px;
+  @apply rounded-full tonal flex justify-center items-center relative font-normal h-[var(--avatar-size)] w-[var(--avatar-size)] text-[length:calc(var(--avatar-size)/3)];
+}
+
+.snapshot-block {
+  @apply flex flex-col p-8 bg-[#111825] text-[#F2F4F7] rounded-3xl border border-[#1D2939];
+}
+
+.hz-scroll {
+  display: grid;
+  grid-auto-columns: calc((100%) / 1);
+  grid-template-rows: repeat(1, 100%);
+  grid-auto-rows: 1fr;
+  overflow-x: scroll;
+  grid-auto-flow: column;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+}
+
+ul.hz-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.hz-scroll > li {
+  scroll-snap-align: start;
+  @apply h-full;
+}
+
+.breakdown {
+  @apply py-[14px] px-4 border border-[#1D2939] w-full last:border-l-0 transition-colors;
+}
+
+.breakdown.active-mode {
+  @apply bg-[#111825];
+}
