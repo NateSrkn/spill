@@ -38,9 +38,9 @@ export const ReceiptMeta = ({
         Date
       </label>
       <Input
+        className="text-center max-w-[170px]"
         type="date"
         value={receipt.date}
-        className="max-w-min"
         name="date"
         handleChange={handleUpdateReceiptMeta}
       />

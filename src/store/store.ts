@@ -17,7 +17,7 @@ export interface Receipt {
 
 export const receiptAtom = atomWithReset<Receipt>({
   title: "New Event",
-  avatar: "😵‍💫",
+  avatar: "",
   tax: 0,
   tip: 0,
   date: getDate(),
@@ -26,7 +26,6 @@ export const receiptAtom = atomWithReset<Receipt>({
 });
 
 export const subtotalAtom = atom<number>(0);
-
 export const receiptAvatar = atom((get) =>
   get(receiptAtom).avatar
     ? get(receiptAtom).avatar

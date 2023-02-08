@@ -64,6 +64,12 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
 .tonal {
   @apply bg-purple-600 bg-opacity-10 text-purple-600 text-opacity-90;
 }

@@ -20,8 +20,8 @@ export const getFirstNameAndInitial = (name: string) => {
   return name ? name : "";
 };
 
-export const getDate = () => {
-  const date = new Date();
+export const getDate = (timestamp?: number) => {
+  const date = timestamp ? new Date(timestamp) : new Date();
   const day = date.getDate().toString().padStart(2, "0");
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
   const year = date.getFullYear();
