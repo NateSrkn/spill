@@ -25,7 +25,6 @@ export const receiptAtom = atomWithReset<Receipt>({
   people: [],
 });
 
-export const subtotalAtom = atom<number>(0);
 export const receiptAvatar = atom((get) =>
   get(receiptAtom).avatar
     ? get(receiptAtom).avatar

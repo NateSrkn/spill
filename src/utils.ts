@@ -90,19 +90,21 @@ export const calculateBreakdown = (receipt: Receipt): FullBreakdown => {
     const simplifiedItems: Array<{
       title: string;
       total: number;
+      id: number;
       formattedTotal: string;
     }> = [];
     const individualTotal = items.reduce((sum, item) => {
-      const total = item.shared
-        ? item.value / Object.keys(item.include).length
-        : item.value;
+      const sharedBetweenCount = Object.values(item.include).filter(
+        (i) => i
+      ).length;
+      const isShared = sharedBetweenCount > 1;
+      const total = isShared ? item.value / sharedBetweenCount : item.value;
       simplifiedItems.push({
-        title: item.shared
-          ? `${item.title} (÷) ${
-              Object.values(item.include).filter((i) => i).length
-            }`
+        title: isShared
+          ? `${item.title} (÷) ${sharedBetweenCount}`
           : item.title,
         total,
+        id: item.id,
         formattedTotal: currencyFormatter.format(total),
       });
       sum += total;
@@ -146,6 +148,7 @@ export type PerPersonBreakdown = {
   items: {
     title: string;
     total: number;
+    id: number;
     formattedTotal: string;
   }[];
   individualGross: number;
@@ -155,3 +158,6 @@ export type PerPersonBreakdown = {
 };
 
 export type Partialize<T, K extends keyof T> = Partial<Pick<T, K>> & Omit<T, K>;
+
+export const clearObject = (object: Record<string, any>) =>
+  Object.keys(object).forEach((key) => delete object[key]);

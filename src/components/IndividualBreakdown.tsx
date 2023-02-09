@@ -41,7 +41,7 @@ export const IndividualBreakdown = ({
               {person.items.map((item, index) => (
                 <div
                   className="flex justify-between items-center"
-                  key={item.total + index}
+                  key={item.id}
                 >
                   <div className="truncate">{item.title}</div>
                   <div className="truncate">{item.formattedTotal}</div>

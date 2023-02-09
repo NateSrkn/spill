@@ -2,7 +2,7 @@ import { atom } from "jotai";
 import { focusAtom } from "jotai-optics";
 import { Partialize } from "../utils";
 import { Item, itemsAtom } from "./items";
-import { receiptAtom, subtotalAtom } from "./store";
+import { receiptAtom } from "./store";
 
 export interface Person {
   id: number;
@@ -34,10 +34,6 @@ export const addPersonAtom = atom(null, (get, set) => {
 export const removePersonAtom = atom(null, (get, set, id: number) => {
   set(peopleAtom, removePerson(get(peopleAtom), id));
   set(itemsAtom, removePersonFromItem(get(itemsAtom), id));
-  set(
-    subtotalAtom,
-    get(itemsAtom).reduce((sum, i) => i.value + sum, 0)
-  );
 });
 
 export const removePersonFromItem = (items: Item[], id: number) => {

@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import React, { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
-import { IconType } from "react-icons";
+import { IconBaseProps } from "react-icons";
 import styles from "./Button.module.scss";
 export enum ButtonColorVariants {
   NEUTRAL = "neutral",
@@ -19,8 +19,8 @@ export enum ButtonTypeVariant {
 export type ButtonProps = {
   buttonVariant?: ButtonTypeVariant;
   colorVariant?: ButtonColorVariants;
-  icon?: React.FunctionComponent<any>;
-  children: React.ReactNode;
+  icon?: React.FunctionComponent<IconBaseProps>;
+  children?: React.ReactNode;
 } & DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement

@@ -53,9 +53,7 @@ export const TotalBreakdown = ({
         </div>
         <div className="text-[#667085] flex justify-between pt-4">
           <div>{receipt.title}</div>
-          <div>
-            {receipt.date ? formatDateForDisplay(receipt.date as any) : ""}
-          </div>
+          <div>{receipt.date ? formatDateForDisplay(receipt.date) : ""}</div>
         </div>
       </div>
     </section>

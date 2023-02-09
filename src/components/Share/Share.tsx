@@ -1,10 +1,9 @@
 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
 import classNames from "classnames";
-import { useAtom } from "jotai";
 import { useResetAtom } from "jotai/utils";
 import { useMemo, useState } from "react";
 import { FiDownload, FiRotateCcw } from "react-icons/fi";
-import { Receipt, receiptAtom, subtotalAtom } from "../../store/store";
+import { Receipt, receiptAtom } from "../../store/store";
 import {
   BillSplitModesEnum,
   calculateBreakdown,
@@ -16,16 +15,15 @@ import { IndividualBreakdown } from "../IndividualBreakdown";
 import { TotalBreakdown } from "../TotalBreakdown";
 export const Share = ({ receipt }: { receipt: Receipt }) => {
   const [billSplitMode, setBillSplitMode] = useState(BillSplitModesEnum.TOTAL);
-  const [subtotal] = useAtom(subtotalAtom);
   const resetReceipt = useResetAtom(receiptAtom);
 
   const calculatedBreakdown = useMemo(
     () => calculateBreakdown(receipt),
-    [subtotal, receipt.tax, receipt.tip, receipt.people.length]
+    [receipt.items, receipt.tax, receipt.tip, receipt.people.length]
   );
 
-  const shareAsImage = async () => {
-    const shareBlock = document.querySelector<HTMLElement>(".snapshot-block");
+  const shareAsImage = async (selector: string = ".snapshot-block") => {
+    const shareBlock = document.querySelector<HTMLElement>(selector);
     if (!shareBlock) return;
     const prevBorder = shareBlock.style.borderRadius;
     shareBlock.style.borderRadius = "0px";
@@ -98,7 +96,7 @@ export const Share = ({ receipt }: { receipt: Receipt }) => {
           buttonVariant={ButtonTypeVariant.ICON_BUTTON_WITH_TEXT}
           colorVariant={ButtonColorVariants.DARK}
           icon={FiDownload}
-          onClick={shareAsImage}
+          onClick={() => shareAsImage()}
         >
           Save Image
         </Button>

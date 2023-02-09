@@ -49,7 +49,7 @@ export const Input = ({
       {asCurrency ? (
         <div className={style.currency}>
           <input
-            defaultValue={value === 0 ? "0.00" : Number(value).toFixed(2)}
+            value={value === 0 ? "0.00" : Number(value).toFixed(2)}
             className={className}
             name={name}
             type="text"
