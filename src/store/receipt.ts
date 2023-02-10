@@ -105,6 +105,7 @@ export const removePersonFromItem = (items: Item[], id: number) => {
   return items.map((item) => {
     const filtered = Object.keys(item.include).filter((i) => Number(i) === id);
     const include = filtered.reduce((acc, person) => {
+      // @ts-ignore
       acc[person] = item.include[person];
       return acc;
     }, {});

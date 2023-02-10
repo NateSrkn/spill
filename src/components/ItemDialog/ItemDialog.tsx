@@ -73,6 +73,7 @@ export const ItemDialog = React.forwardRef(function ItemDialog(
             onSubmit={(values) => {
               isEdit
                 ? Object.keys(values).forEach((key) =>
+                    // @ts-ignore
                     updateItem(initialItem.id, key, values[key])
                   )
                 : addItem({ ...values });

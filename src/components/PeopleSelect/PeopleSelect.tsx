@@ -3,7 +3,7 @@ import { FiCheck } from "react-icons/fi";
 import { getInitials } from "../../utils";
 import { Button, ButtonColorVariants, ButtonTypeVariant } from "../Button";
 import { ChangeEventHandler, useState } from "react";
-import { Include } from "../../store/items";
+import { Include } from "../../store";
 import { FormikErrors, FormikTouched } from "formik";
 import { useReceiptStore } from "../../store";
 export const PeopleSelect = ({
@@ -14,8 +14,8 @@ export const PeopleSelect = ({
 }: {
   include: Include;
   handleChange: ChangeEventHandler<HTMLInputElement>;
-  error?: FormikErrors<Include>;
-  touched?: FormikTouched<Include>;
+  error?: FormikErrors<Include> | any;
+  touched?: FormikTouched<Include> | any;
 }) => {
   const defaultToggleState =
     Object.keys(include).length && Object.values(include).every((i) => i);
