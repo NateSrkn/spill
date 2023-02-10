@@ -10,5 +10,6 @@ describe("JaJaJa", () => {
     const increase = peopleSection.get("button[name='increase']");
     increase.click().click().click().click();
     cy.get("input[name='name']").should("have.length", 4);
+    cy.contains("Add Item").click();
   });
 });

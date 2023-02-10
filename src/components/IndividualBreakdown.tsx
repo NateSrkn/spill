@@ -3,6 +3,7 @@ import {
   formatDateForDisplay,
   FullBreakdown,
   getFirstNameAndInitial,
+  getInitials,
   PerPersonBreakdown,
 } from "$/utils";
 import classNames from "classnames";
@@ -25,7 +26,7 @@ export const IndividualBreakdown = ({
           key={person.id}
           person={person}
           breakdown={calculatedBreakdown.perPerson[person.id]}
-          avatar={avatar}
+          avatar={avatar || getInitials(title)}
           groupSize={groupSize}
           title={title}
           date={date}
