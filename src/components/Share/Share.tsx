@@ -1,9 +1,8 @@
 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
 import classNames from "classnames";
-import { useResetAtom } from "jotai/utils";
 import { useMemo, useState } from "react";
 import { FiDownload, FiRotateCcw } from "react-icons/fi";
-import { Receipt, receiptAtom } from "../../store/store";
+import { Receipt, useReceiptStore } from "../../store";
 import {
   BillSplitModesEnum,
   calculateBreakdown,
@@ -13,10 +12,11 @@ import {
 import { Button, ButtonColorVariants, ButtonTypeVariant } from "../Button";
 import { IndividualBreakdown } from "../IndividualBreakdown";
 import { TotalBreakdown } from "../TotalBreakdown";
+import styles from "./Share.module.scss";
+
 export const Share = ({ receipt }: { receipt: Receipt }) => {
   const [billSplitMode, setBillSplitMode] = useState(BillSplitModesEnum.TOTAL);
-  const resetReceipt = useResetAtom(receiptAtom);
-
+  const resetReceipt = useReceiptStore((state) => state.reset);
   const calculatedBreakdown = useMemo(
     () => calculateBreakdown(receipt),
     [receipt.items, receipt.tax, receipt.tip, receipt.people.length]
@@ -55,35 +55,12 @@ export const Share = ({ receipt }: { receipt: Receipt }) => {
   };
 
   return (
-    <section className="flex flex-col gap-4 p-4 md:px-0 md:py-4 max-w-md mx-auto">
-      <h4 className="text-2xl px-4 mt-6 font-semibold text-[#F2F4F7]">
-        Your bill, spilled
-      </h4>
-      <ToggleGroupPrimitive.Root
-        type="single"
-        className="flex text-[#F2F4F7] font-semibold text-base px-4"
-        defaultValue={BillSplitModesEnum.TOTAL}
-        onValueChange={(value: BillSplitModesEnum) =>
-          value ? setBillSplitMode(value) : null
-        }
-      >
-        <ToggleGroupPrimitive.Item
-          value={BillSplitModesEnum.TOTAL}
-          className={classNames("breakdown rounded-l-lg", {
-            "active-mode": billSplitMode === BillSplitModesEnum.TOTAL,
-          })}
-        >
-          Total
-        </ToggleGroupPrimitive.Item>
-        <ToggleGroupPrimitive.Item
-          value={BillSplitModesEnum.INDIVIDUAL}
-          className={classNames("breakdown rounded-r-lg", {
-            "active-mode": billSplitMode === BillSplitModesEnum.INDIVIDUAL,
-          })}
-        >
-          Individual
-        </ToggleGroupPrimitive.Item>
-      </ToggleGroupPrimitive.Root>
+    <section className={styles.share}>
+      <h4 className={styles.toggleHeader}>Your bill, spilled</h4>
+      <ToggleGroup
+        billSplitMode={billSplitMode}
+        setBillSplitMode={setBillSplitMode}
+      />
       {billSplitMode === BillSplitModesEnum.TOTAL && (
         <TotalBreakdown calculatedBreakdown={calculatedBreakdown} />
       )}
@@ -91,7 +68,7 @@ export const Share = ({ receipt }: { receipt: Receipt }) => {
         <IndividualBreakdown calculatedBreakdown={calculatedBreakdown} />
       )}
 
-      <section className="p-4 grid grid-cols-2">
+      <section className={styles.buttonGroup}>
         <Button
           buttonVariant={ButtonTypeVariant.ICON_BUTTON_WITH_TEXT}
           colorVariant={ButtonColorVariants.DARK}
@@ -110,5 +87,41 @@ export const Share = ({ receipt }: { receipt: Receipt }) => {
         </Button>
       </section>
     </section>
+  );
+};
+
+const ToggleGroup = ({
+  setBillSplitMode,
+  billSplitMode,
+}: {
+  setBillSplitMode: (mode: BillSplitModesEnum) => void;
+  billSplitMode: BillSplitModesEnum;
+}) => {
+  return (
+    <ToggleGroupPrimitive.Root
+      type="single"
+      className={styles.toggleGroup}
+      defaultValue={BillSplitModesEnum.TOTAL}
+      onValueChange={(value: BillSplitModesEnum) =>
+        value ? setBillSplitMode(value) : null
+      }
+    >
+      <ToggleGroupPrimitive.Item
+        value={BillSplitModesEnum.TOTAL}
+        className={classNames(styles.toggleButton, "rounded-l-lg", {
+          [styles.active]: billSplitMode === BillSplitModesEnum.TOTAL,
+        })}
+      >
+        Total
+      </ToggleGroupPrimitive.Item>
+      <ToggleGroupPrimitive.Item
+        value={BillSplitModesEnum.INDIVIDUAL}
+        className={classNames(styles.toggleButton, "rounded-r-lg", {
+          [styles.active]: billSplitMode === BillSplitModesEnum.INDIVIDUAL,
+        })}
+      >
+        Individual
+      </ToggleGroupPrimitive.Item>
+    </ToggleGroupPrimitive.Root>
   );
 };

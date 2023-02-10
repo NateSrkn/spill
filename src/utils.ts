@@ -1,6 +1,5 @@
 import html2canvas from "html2canvas";
-import { Item } from "./store/items";
-import { Receipt } from "./store/store";
+import { Receipt, Item } from "./store";
 
 export const getInitials = (name: string) => {
   const names = name ? name.split(" ") : [];
@@ -13,7 +12,7 @@ export const getInitials = (name: string) => {
   return name ? name.charAt(0) : "";
 };
 export const getFirstNameAndInitial = (name: string) => {
-  const names = name ? name.split(" ") : [];
+  const names = name ? name.trim().split(" ") : [];
   if (names.length > 1) {
     return `${names[0]} ${names[names.length - 1].charAt(0)}.`;
   }
@@ -85,7 +84,7 @@ export const calculateBreakdown = (receipt: Receipt): FullBreakdown => {
   const taxRate = receipt.tax ? calculateTaxPercent(subtotal, receipt.tax) : 0;
   const tipSplit = receipt.tip / receipt.people.length;
   let grossTotal = 0;
-  const perPerson = receipt.people.map((p) => {
+  const perPerson = receipt.people.reduce((acc, p) => {
     const items = getRelatedItems(receipt.items, p.id);
     const simplifiedItems: Array<{
       title: string;
@@ -97,10 +96,10 @@ export const calculateBreakdown = (receipt: Receipt): FullBreakdown => {
       const sharedBetweenCount = Object.values(item.include).filter(
         (i) => i
       ).length;
-      const isShared = sharedBetweenCount > 1;
-      const total = isShared ? item.value / sharedBetweenCount : item.value;
+
+      const total = item.shared ? item.value / sharedBetweenCount : item.value;
       simplifiedItems.push({
-        title: isShared
+        title: item.shared
           ? `${item.title} (÷) ${sharedBetweenCount}`
           : item.title,
         total,
@@ -110,19 +109,18 @@ export const calculateBreakdown = (receipt: Receipt): FullBreakdown => {
       sum += total;
       return sum;
     }, 0);
-    const individualTax = calculateTax(individualTotal, taxRate);
-    const individualShared = individualTax + tipSplit;
-    const individualGross = individualTotal + individualShared;
-    grossTotal += individualGross;
-    return {
-      name: p.name,
+    const tax = calculateTax(individualTotal, taxRate);
+    const shared = tax + tipSplit;
+    const gross = individualTotal + shared;
+    grossTotal += gross;
+    // @ts-ignore
+    acc[p.id] = {
       items: simplifiedItems,
-      individualGross,
-      individualGrossFormatted: currencyFormatter.format(individualGross),
-      individualShared,
-      individualSharedFormatted: currencyFormatter.format(individualShared),
+      gross,
+      shared,
     };
-  });
+    return acc;
+  }, {} as PerPersonBreakdown);
   return {
     subtotal: currencyFormatter.format(subtotal),
     grossTotal: currencyFormatter.format(grossTotal),
@@ -140,24 +138,25 @@ export type FullBreakdown = {
   subtotal: string;
   grossTotal: string;
   taxRate: number;
-  perPerson: PerPersonBreakdown[];
+  perPerson: Record<number, PerPersonBreakdown>;
 };
 
 export type PerPersonBreakdown = {
-  name: string;
   items: {
     title: string;
     total: number;
     id: number;
     formattedTotal: string;
   }[];
-  individualGross: number;
-  individualGrossFormatted: string;
-  individualShared: number;
-  individualSharedFormatted: string;
+  gross: number;
+  shared: number;
 };
 
 export type Partialize<T, K extends keyof T> = Partial<Pick<T, K>> & Omit<T, K>;
 
 export const clearObject = (object: Record<string, any>) =>
   Object.keys(object).forEach((key) => delete object[key]);
+
+export type PartialRecord<K extends keyof any, T> = {
+  [P in K]?: T;
+};

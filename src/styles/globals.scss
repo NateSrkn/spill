@@ -102,11 +102,3 @@ ul.hz-scroll::-webkit-scrollbar {
   scroll-snap-align: start;
   @apply h-full;
 }
-
-.breakdown {
-  @apply py-[14px] px-4 border border-[#1D2939] w-full last:border-l-0 transition-colors;
-}
-
-.breakdown.active-mode {
-  @apply bg-[#111825];
-}

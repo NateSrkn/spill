@@ -2,13 +2,16 @@ import React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Button } from "../Button";
 import { ButtonColorVariants, ButtonTypeVariant } from "../Button";
-import { addItemAtom, Item, updateItemAtom } from "../../store/items";
-import { useAtom } from "jotai";
+import { Item } from "../../store";
 import styles from "./ItemDialog.module.scss";
-import { useFormik } from "formik";
 import { Input } from "../Input";
-
+import { Formik } from "formik";
 import { PeopleSelect } from "../PeopleSelect";
+import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
+import useWindowSize from "../../hooks/useWindowSize";
+import classNames from "classnames";
+import { useReceiptStore } from "../../store";
+import { PartialRecord } from "../../utils";
 interface ItemDialogProps {
   trigger: React.ReactNode;
   initialItem?: Item;
@@ -21,109 +24,196 @@ export const ItemDialog = React.forwardRef(function ItemDialog(
       title: "",
       value: 0,
       include: {},
+      shared: false,
       id: -1,
     },
   }: ItemDialogProps,
   ref
 ) {
+  const { height, width } = useWindowSize();
   const isEdit = initialItem.id > 0;
-  const [, addItem] = useAtom(addItemAtom);
-  const [, updateItem] = useAtom(updateItemAtom);
-
-  const item = useFormik<Item>({
-    initialValues: initialItem,
-    onSubmit: async (values) => {
-      isEdit
-        ? Object.keys(values).forEach((key) =>
-            updateItem(initialItem.id, key, values[key])
-          )
-        : addItem({ ...values });
-      item.resetForm();
-      handleOpenChange(false);
-    },
-  });
+  const addItem = useReceiptStore((state) => state.addItem);
+  const updateItem = useReceiptStore((state) => state.updateItem);
   const [open, setOpen] = React.useState(false);
   const handleOpenChange = (isOpen: boolean = false) => {
-    const copy = { ...item };
-    item.values = copy.values;
     setOpen(isOpen);
   };
 
+  const dialogPosition =
+    width > 768
+      ? {}
+      : ({
+          "--position": `${height}px`,
+        } as React.CSSProperties);
   return (
     <Dialog.Root open={open} onOpenChange={handleOpenChange}>
       <Dialog.Trigger asChild>{Trigger}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className={styles.overlay} />
         <Dialog.Content
+          onOpenAutoFocus={(event) => event.preventDefault()}
           className={styles.content}
-          onInteractOutside={() => item.resetForm()}
+          style={dialogPosition}
         >
-          <Dialog.Title className={styles.title}>Add Item</Dialog.Title>
-          <form className="flex flex-col gap-4" onSubmit={item.handleSubmit}>
-            <section className="grid grid-cols-[60%,35%] gap-4 w-full">
-              <fieldset className={styles.fieldset}>
-                <div>
-                  {item.errors.title && item.touched.title ? (
-                    <div className="text-red-600 text-sm">
-                      {item.errors.title}
-                    </div>
-                  ) : null}
-                  <label className="Label" htmlFor="title">
-                    Item
-                  </label>
+          <Formik
+            initialValues={initialItem}
+            validate={(values) => {
+              const errors: PartialRecord<keyof Item, string> = {};
+              if (!values.title) {
+                errors.title = "Please enter a title";
+              }
+              if (!values.value) {
+                errors.value = "Please enter a value";
+              }
+              if (Object.values(values.include).every((i) => i === false)) {
+                errors.include = "Please select at least one person";
+              }
+              return errors;
+            }}
+            onSubmit={(values) => {
+              isEdit
+                ? Object.keys(values).forEach((key) =>
+                    updateItem(initialItem.id, key, values[key])
+                  )
+                : addItem({ ...values });
+
+              handleOpenChange(false);
+            }}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+            }) => (
+              <form onSubmit={handleSubmit} className={styles.innerContent}>
+                <Dialog.Title className={styles.title}>Add Item</Dialog.Title>
+                <section className="flex flex-col gap-4 mb-20">
+                  <section className="grid grid-cols-[60%,35%] gap-4 w-full">
+                    <fieldset className={styles.fieldset}>
+                      <div>
+                        <label className="Label" htmlFor="title">
+                          Item
+                        </label>
+                      </div>
+                      {errors.title && touched.title ? (
+                        <div className="text-red-600 text-sm">
+                          {errors.title}
+                        </div>
+                      ) : null}
+                      <Input
+                        id="title"
+                        name="title"
+                        value={values.title}
+                        onBlur={handleBlur}
+                        handleChange={(name, value) =>
+                          handleChange({ currentTarget: { name, value } })
+                        }
+                      />
+                    </fieldset>
+                    <fieldset className={styles.fieldset}>
+                      <label className="Label" htmlFor="value">
+                        Amount
+                      </label>
+                      {errors.value && touched.value ? (
+                        <div className="text-red-600 text-sm">
+                          {errors.value}
+                        </div>
+                      ) : null}
+                      <Input
+                        id="value"
+                        asCurrency
+                        name="value"
+                        type="number"
+                        value={values.value}
+                        onBlur={handleBlur}
+                        handleChange={(name, value) =>
+                          handleChange({ currentTarget: { name, value } })
+                        }
+                      />
+                    </fieldset>
+                  </section>
+                  <ToggleGroup handleChange={handleChange} values={values} />
+                  <PeopleSelect
+                    include={values.include}
+                    handleChange={handleChange}
+                    error={errors.include}
+                    touched={touched.include}
+                  />
+                </section>
+                <div className={styles.buttons} style={dialogPosition}>
+                  <Dialog.Close asChild>
+                    <Button
+                      onClick={() => handleOpenChange(false)}
+                      buttonVariant={ButtonTypeVariant.DEFAULT}
+                      colorVariant={ButtonColorVariants.DELETE}
+                    >
+                      Cancel
+                    </Button>
+                  </Dialog.Close>
+                  <Button
+                    colorVariant={ButtonColorVariants.PRIMARY}
+                    type="submit"
+                  >
+                    Save item
+                  </Button>
                 </div>
-                <Input
-                  id="title"
-                  name="title"
-                  value={item.values.title}
-                  handleChange={(name, value) =>
-                    item.handleChange({ currentTarget: { name, value } })
-                  }
-                />
-              </fieldset>
-              <fieldset className={styles.fieldset}>
-                <label className="Label" htmlFor="value">
-                  Amount
-                </label>
-                {item.errors.value && item.touched.value ? (
-                  <div className="text-red-600 text-sm">
-                    {item.errors.value}
-                  </div>
-                ) : null}
-                <Input
-                  id="value"
-                  asCurrency
-                  name="value"
-                  type="number"
-                  required={!!item.errors.value}
-                  value={item.values.value}
-                  handleChange={(name, value) =>
-                    item.handleChange({ currentTarget: { name, value } })
-                  }
-                />
-              </fieldset>
-            </section>
-            <PeopleSelect
-              include={item.values.include}
-              handleChange={item.handleChange}
-            />
-            <div className="flex gap-4 mt-4">
-              <Dialog.Close asChild>
-                <Button
-                  onClick={() => handleOpenChange(false)}
-                  buttonVariant={ButtonTypeVariant.DEFAULT}
-                  colorVariant={ButtonColorVariants.DELETE}
-                >
-                  Cancel
-                </Button>
-              </Dialog.Close>
-              <Button colorVariant={ButtonColorVariants.PRIMARY} type="submit">
-                Save changes
-              </Button>
-            </div>
-          </form>
+              </form>
+            )}
+          </Formik>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
   );
 });
+
+const ToggleGroup = ({
+  handleChange,
+  values,
+}: {
+  handleChange: any;
+  values: Item;
+}) => {
+  enum SharedStateEnum {
+    SHARED = "shared",
+    INDIVIDUAL = "individual",
+  }
+  return (
+    <ToggleGroupPrimitive.Root
+      type="single"
+      className={styles.toggleGroup}
+      defaultValue={SharedStateEnum.INDIVIDUAL}
+      onValueChange={(value) =>
+        value
+          ? handleChange({
+              currentTarget: {
+                name: "shared",
+                value: value === SharedStateEnum.INDIVIDUAL ? false : true,
+              },
+            })
+          : null
+      }
+    >
+      <ToggleGroupPrimitive.Item
+        value={SharedStateEnum.INDIVIDUAL}
+        className={classNames(styles.toggleButton, {
+          [styles.active]: values.shared === false,
+        })}
+      >
+        <label>Add To Each Person</label>
+        <div>Applies full amount to each person</div>
+      </ToggleGroupPrimitive.Item>
+      <ToggleGroupPrimitive.Item
+        value={SharedStateEnum.SHARED}
+        className={classNames(styles.toggleButton, {
+          [styles.active]: values.shared === true,
+        })}
+      >
+        <label>Split Evenly</label>
+        <div>Divides amount among group</div>
+      </ToggleGroupPrimitive.Item>
+    </ToggleGroupPrimitive.Root>
+  );
+};

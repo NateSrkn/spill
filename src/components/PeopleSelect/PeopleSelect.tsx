@@ -1,32 +1,41 @@
 import classNames from "classnames";
-import { useAtom } from "jotai";
 import { FiCheck } from "react-icons/fi";
-import { peopleAtom } from "../../store/people";
 import { getInitials } from "../../utils";
 import { Button, ButtonColorVariants, ButtonTypeVariant } from "../Button";
 import { ChangeEventHandler, useState } from "react";
 import { Include } from "../../store/items";
+import { FormikErrors, FormikTouched } from "formik";
+import { useReceiptStore } from "../../store";
 export const PeopleSelect = ({
   include,
   handleChange,
+  error,
+  touched,
 }: {
   include: Include;
   handleChange: ChangeEventHandler<HTMLInputElement>;
+  error?: FormikErrors<Include>;
+  touched?: FormikTouched<Include>;
 }) => {
-  const [toggleStatus, setToggleStatus] = useState(false);
-  const [people] = useAtom(peopleAtom);
-
+  const defaultToggleState =
+    Object.keys(include).length && Object.values(include).every((i) => i);
+  const people = useReceiptStore((state) => state.people);
+  const [toggleStatus, setToggleStatus] = useState(defaultToggleState);
+  const hasError = error && touched;
   const handleSelectAll = () => {
     const include = people.reduce((acc, p) => {
       acc[p.id] = !toggleStatus;
       return acc;
     }, {} as Include);
-    handleChange({ currentTarget: { name: "include", value: include } });
+    handleChange({
+      currentTarget: { name: "include", value: include as any },
+    } as any);
     setToggleStatus(!toggleStatus);
   };
 
   return (
     <fieldset className="flex flex-col gap-2">
+      {hasError ? <div className="text-red-600 text-sm">{error}</div> : null}
       <div className="flex justify-between">
         <label htmlFor="included">Include</label>
         <Button
@@ -41,7 +50,12 @@ export const PeopleSelect = ({
       <div
         role="group"
         aria-labelledby="checkbox-group"
-        className="border-[#EAECF0] border rounded-lg flex flex-col"
+        className={classNames(
+          "border-[#EAECF0] border rounded-lg flex flex-col",
+          {
+            "border-none ring ring-red-600": hasError,
+          }
+        )}
       >
         {people.map((person) => (
           <label
@@ -70,7 +84,7 @@ export const PeopleSelect = ({
               type="checkbox"
               className="hidden"
               name={`include[${person.id}]`}
-              value={include[person.id]}
+              value={include[person.id] as any}
               onChange={handleChange}
             />
             {include[person.id] && <FiCheck className="text-purple-600" />}

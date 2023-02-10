@@ -1,49 +1,37 @@
-import { useAtom } from "jotai";
-import { ChangeEventHandler } from "react";
 import { FiMinus, FiPlus, FiX } from "react-icons/fi";
-import {
-  addPersonAtom,
-  peopleAtom,
-  personAtom,
-  removePersonAtom,
-  updatePersonAtom,
-} from "../../store/people";
+import { useReceiptStore } from "../../store";
 import { getInitials } from "../../utils";
 import { Button, ButtonColorVariants, ButtonTypeVariant } from "../Button";
 import { Input } from "../Input";
 import styles from "./People.module.scss";
 
 export const People = () => {
-  const [, addPerson] = useAtom(addPersonAtom);
-  const [, removePerson] = useAtom(removePersonAtom);
-  const [, updatePerson] = useAtom(updatePersonAtom);
-  const [, setPerson] = useAtom(personAtom);
-  const [people] = useAtom(peopleAtom);
+  const people = useReceiptStore((state) => state.people);
+  const addPerson = useReceiptStore((state) => state.addPerson);
+  const removePerson = useReceiptStore((state) => state.removePerson);
+  const updatePerson = useReceiptStore((state) => state.updatePerson);
+
   const handleIncreaseGroupSize = () => {
-    setPerson({ name: `Person ${people.length + 1}`, id: Date.now() });
     addPerson();
   };
-  const handleGroupSizeInput: ChangeEventHandler<HTMLInputElement> = (
-    event
-  ) => {
-    const { currentTarget } = event;
-    if (!currentTarget) return;
-    const absolute = Math.abs(Number(currentTarget.value));
-    event.currentTarget.value = `${absolute}`;
-    const difference = Math.abs(people.length - absolute);
-    let prevNameNumber = people.length;
-    if (people.length < absolute) {
-      for (let i = 0; i < difference; i++) {
-        prevNameNumber++;
-        setPerson({
-          name: `Person ${prevNameNumber}`,
-        });
-        addPerson();
-      }
-    } else {
-      // people = people.slice(0, absolute);
-    }
-  };
+  // const handleGroupSizeInput: ChangeEventHandler<HTMLInputElement> = (
+  //   event
+  // ) => {
+  //   const { currentTarget } = event;
+  //   if (!currentTarget) return;
+  //   const absolute = Math.abs(Number(currentTarget.value));
+  //   event.currentTarget.value = `${absolute}`;
+  //   const difference = Math.abs(people.length - absolute);
+  //   let prevNameNumber = people.length;
+  //   if (people.length < absolute) {
+  //     for (let i = 0; i < difference; i++) {
+  //       prevNameNumber++;
+  //       addPerson();
+  //     }
+  //   } else {
+  //     // people = people.slice(0, absolute);
+  //   }
+  // };
 
   const handleDecreaseGroupSize = () => {
     if (people.length === 0) return;

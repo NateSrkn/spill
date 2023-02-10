@@ -1,6 +1,5 @@
-import { receiptAtom } from "$/store/store";
-import { useAtom } from "jotai";
 import Head from "next/head";
+import { useReceiptStore } from "$/store";
 import Header from "$/components/header";
 import { Items } from "$/components/Items";
 import { People } from "$/components/People";
@@ -9,11 +8,8 @@ import { TaxAndTip } from "../components/TaxAndTip";
 import { Share } from "../components/Share";
 
 export default function Home() {
-  const [receipt, setReceipt] = useAtom(receiptAtom);
-
-  const handleUpdateReceiptMeta = (name: string, value: string | number) => {
-    setReceipt({ ...receipt, [name]: value });
-  };
+  const receipt = useReceiptStore();
+  const updateReceiptMeta = useReceiptStore((state) => state.updateMeta);
 
   return (
     <>
@@ -24,19 +20,16 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <section className="wrapper">
+        {/* <Picker  /> */}
         <Header />
         <div className="flex flex-col gap-4 max-w-md mx-auto">
           <ReceiptMeta
             receipt={receipt}
-            handleUpdateReceiptMeta={handleUpdateReceiptMeta}
+            handleUpdateReceiptMeta={updateReceiptMeta}
           />
           <People />
           <Items />
-          <TaxAndTip
-            tax={receipt.tax}
-            tip={receipt.tip}
-            handleUpdateReceiptMeta={handleUpdateReceiptMeta}
-          />
+          <TaxAndTip handleUpdateReceiptMeta={updateReceiptMeta} />
         </div>
       </section>
       <Share receipt={receipt} />

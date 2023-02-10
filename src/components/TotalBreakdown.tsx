@@ -1,10 +1,12 @@
 import classNames from "classnames";
-import { useAtom } from "jotai";
-import { receiptAtom, receiptAvatar } from "$/store/store";
+
+import { useReceiptStore } from "$/store";
 import {
   formatDateForDisplay,
   getFirstNameAndInitial,
   FullBreakdown,
+  currencyFormatter,
+  getInitials,
 } from "$/utils";
 
 export const TotalBreakdown = ({
@@ -12,8 +14,7 @@ export const TotalBreakdown = ({
 }: {
   calculatedBreakdown: FullBreakdown;
 }) => {
-  const [receipt] = useAtom(receiptAtom);
-  const [avatar] = useAtom(receiptAvatar);
+  const receipt = useReceiptStore();
 
   return (
     <section className="snapshot-block">
@@ -24,7 +25,7 @@ export const TotalBreakdown = ({
               {calculatedBreakdown.grossTotal}
             </h2>
             <p className="text-[#D0D5DD]">
-              Shared with {calculatedBreakdown.perPerson.length} people
+              Shared with {receipt.people.length} people
             </p>
           </div>
           <div
@@ -33,11 +34,11 @@ export const TotalBreakdown = ({
               text: !receipt.avatar,
             })}
           >
-            {avatar}
+            {receipt.avatar || getInitials(receipt.title)}
           </div>
         </div>
         <div className="w-full grid grid-cols-2 gap-2">
-          {calculatedBreakdown.perPerson.map((person) => (
+          {receipt.people.map((person) => (
             <div
               className="flex flex-col p-4 justify-center rounded-lg tonal"
               key={person.name}
@@ -46,7 +47,9 @@ export const TotalBreakdown = ({
                 {getFirstNameAndInitial(person.name)}
               </div>
               <div className="text-[18px] font-semibold truncate">
-                {person.individualGrossFormatted}
+                {currencyFormatter.format(
+                  calculatedBreakdown.perPerson[person.id]?.gross || 0
+                )}
               </div>
             </div>
           ))}

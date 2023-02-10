@@ -1,18 +1,13 @@
-import { useAtom } from "jotai";
-import { itemsAtom, removeItemAtom, updateItemAtom } from "../../store/items";
 import { Input } from "../Input";
 import { ItemDialog } from "../ItemDialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Button, ButtonColorVariants, ButtonTypeVariant } from "../Button";
 import { FiMoreVertical } from "react-icons/fi";
+import { useReceiptStore } from "../../store";
 export const Items = () => {
-  const [, updateItem] = useAtom(updateItemAtom);
-  const [, removeItem] = useAtom(removeItemAtom);
-  const [items] = useAtom(itemsAtom);
-
-  const handleRemoveItem = (id: number) => {
-    removeItem(id);
-  };
+  const items = useReceiptStore((state) => state.items);
+  const updateItem = useReceiptStore((state) => state.updateItem);
+  const removeItem = useReceiptStore((state) => state.removeItem);
 
   return (
     <section className="grouped-block flex-col gap-2">
@@ -51,7 +46,7 @@ export const Items = () => {
                 <DropdownMenu.Item asChild>
                   <button
                     className="text-left"
-                    onClick={() => handleRemoveItem(item.id)}
+                    onClick={() => removeItem(item.id)}
                   >
                     Delete
                   </button>

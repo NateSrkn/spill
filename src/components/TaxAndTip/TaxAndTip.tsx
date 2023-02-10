@@ -1,14 +1,12 @@
+import { UpdateReceiptMeta, useReceiptStore } from "../../store";
 import { Input } from "../Input";
 
 export const TaxAndTip = ({
-  tax,
-  tip,
   handleUpdateReceiptMeta,
 }: {
-  tax: number;
-  tip: number;
-  handleUpdateReceiptMeta: (name: string, value: string) => void;
+  handleUpdateReceiptMeta: UpdateReceiptMeta;
 }) => {
+  const [tax, tip] = useReceiptStore((state) => [state.tax, state.tip]);
   return (
     <section className="grouped-block gap-4 w-full">
       <h3>Tax and Tip</h3>

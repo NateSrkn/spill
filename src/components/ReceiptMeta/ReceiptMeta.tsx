@@ -1,6 +1,5 @@
-import { useAtom } from "jotai";
-import { Item } from "../../store/items";
-import { Receipt, receiptAvatar } from "../../store/store";
+import { Receipt } from "../../store";
+import { getInitials } from "../../utils";
 import { Input } from "../Input";
 
 export const ReceiptMeta = ({
@@ -8,9 +7,11 @@ export const ReceiptMeta = ({
   handleUpdateReceiptMeta,
 }: {
   receipt: Receipt;
-  handleUpdateReceiptMeta: (name: string, value: string) => void;
+  handleUpdateReceiptMeta: <T extends keyof Receipt>(
+    name: T,
+    value: Receipt[T]
+  ) => void;
 }) => {
-  const [avatar] = useAtom(receiptAvatar);
   return (
     <section className="grouped-block justify-center items-center gap-4">
       <div
@@ -21,7 +22,7 @@ export const ReceiptMeta = ({
           } as React.CSSProperties
         }
       >
-        {avatar}
+        {receipt.avatar || getInitials(receipt.title)}
       </div>
       <label className="sr-only" htmlFor="title">
         Event Title
