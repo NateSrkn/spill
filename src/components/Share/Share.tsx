@@ -16,42 +16,48 @@ import styles from "./Share.module.scss";
 
 export const Share = ({ receipt }: { receipt: Receipt }) => {
   const [billSplitMode, setBillSplitMode] = useState(BillSplitModesEnum.TOTAL);
+  const [selector, setSelector] = useState(".snapshot-block");
   const resetReceipt = useReceiptStore((state) => state.reset);
   const calculatedBreakdown = useMemo(
     () => calculateBreakdown(receipt),
     [receipt.items, receipt.tax, receipt.tip, receipt.people.length]
   );
 
-  const shareAsImage = async (selector: string = ".snapshot-block") => {
+  const shareAsImage = async () => {
     const shareBlock = document.querySelector<HTMLElement>(selector);
     if (!shareBlock) return;
     const prevBorder = shareBlock.style.borderRadius;
     shareBlock.style.borderRadius = "0px";
-    await convertToImage(shareBlock, (blob) => {
-      shareBlock.style.borderRadius = prevBorder;
-      if (!blob) return;
-      if (navigator.share) {
-        const file = new File(
-          [blob],
-          `${receipt.date}_${toPascalCase(receipt.title)}.jpg`,
-          {
-            type: "image/jpeg",
-          }
-        );
-        navigator
-          .share({
-            title: receipt.title,
-            files: [file],
-            url: window.location.href,
-          })
-          .then(() => console.log("Successful share"))
-          .catch((error) => console.log("Error sharing", error));
-      } else if (window.ClipboardItem) {
-        navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
-      } else {
-        console.log("Unable to save to clipboard");
-      }
-    });
+
+    try {
+      await convertToImage(shareBlock, (blob) => {
+        shareBlock.style.borderRadius = prevBorder;
+        if (!blob) return;
+        if (navigator.share) {
+          const file = new File(
+            [blob],
+            `${receipt.date}_${toPascalCase(receipt.title)}.jpg`,
+            {
+              type: "image/jpeg",
+            }
+          );
+          navigator
+            .share({
+              title: receipt.title,
+              files: [file],
+              url: window.location.href,
+            })
+            .then(() => console.log("Successful share"))
+            .catch((error) => console.log("Error sharing", error));
+        } else if (window.ClipboardItem) {
+          navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+        } else {
+          console.log("Unable to save to clipboard");
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -65,7 +71,10 @@ export const Share = ({ receipt }: { receipt: Receipt }) => {
         <TotalBreakdown calculatedBreakdown={calculatedBreakdown} />
       )}
       {billSplitMode === BillSplitModesEnum.INDIVIDUAL && (
-        <IndividualBreakdown calculatedBreakdown={calculatedBreakdown} />
+        <IndividualBreakdown
+          calculatedBreakdown={calculatedBreakdown}
+          setSelector={setSelector}
+        />
       )}
 
       <section className={styles.buttonGroup}>

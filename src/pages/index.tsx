@@ -10,7 +10,6 @@ import { Share } from "../components/Share";
 export default function Home() {
   const receipt = useReceiptStore();
   const updateReceiptMeta = useReceiptStore((state) => state.updateMeta);
-
   return (
     <>
       <Head>
@@ -20,7 +19,6 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <section className="wrapper">
-        {/* <Picker  /> */}
         <Header />
         <div className="flex flex-col gap-4 max-w-md mx-auto">
           <ReceiptMeta

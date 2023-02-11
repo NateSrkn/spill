@@ -90,7 +90,9 @@ export const ItemDialog = React.forwardRef(function ItemDialog(
               handleSubmit,
             }) => (
               <form onSubmit={handleSubmit} className={styles.innerContent}>
-                <Dialog.Title className={styles.title}>Add Item</Dialog.Title>
+                <Dialog.Title className={styles.title}>
+                  {isEdit ? "Edit Item" : "Add Item"}
+                </Dialog.Title>
                 <section className="flex flex-col gap-4 mb-20">
                   <section className="grid grid-cols-[60%,35%] gap-4 w-full">
                     <fieldset className={styles.fieldset}>
@@ -107,6 +109,7 @@ export const ItemDialog = React.forwardRef(function ItemDialog(
                       <Input
                         id="title"
                         name="title"
+                        data-cy="addInputTitle"
                         value={values.title}
                         onBlur={handleBlur}
                         handleChange={(name, value) =>
@@ -130,6 +133,7 @@ export const ItemDialog = React.forwardRef(function ItemDialog(
                         type="number"
                         value={values.value}
                         onBlur={handleBlur}
+                        data-cy="addInputValue"
                         handleChange={(name, value) =>
                           handleChange({ currentTarget: { name, value } })
                         }
@@ -157,6 +161,7 @@ export const ItemDialog = React.forwardRef(function ItemDialog(
                   <Button
                     colorVariant={ButtonColorVariants.PRIMARY}
                     type="submit"
+                    data-cy="item-submit"
                   >
                     Save item
                   </Button>
@@ -202,6 +207,7 @@ const ToggleGroup = ({
         className={classNames(styles.toggleButton, {
           [styles.active]: values.shared === false,
         })}
+        data-cy="individualSelect"
       >
         <label>Add To Each Person</label>
         <div>Applies full amount to each person</div>
@@ -211,6 +217,7 @@ const ToggleGroup = ({
         className={classNames(styles.toggleButton, {
           [styles.active]: values.shared === true,
         })}
+        data-cy="sharedSelect"
       >
         <label>Split Evenly</label>
         <div>Divides amount among group</div>

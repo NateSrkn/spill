@@ -61,8 +61,12 @@ export const People = () => {
           </Button>
         </div>
       </header>
-      {people.map((person) => (
-        <div key={person.id} className={styles.person}>
+      {people.map((person, index) => (
+        <div
+          key={person.id}
+          className={styles.person}
+          data-cy={`person-${index}`}
+        >
           <div
             className="avatar flex-shrink-0"
             style={

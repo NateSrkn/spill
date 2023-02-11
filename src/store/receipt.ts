@@ -1,5 +1,4 @@
 import { create } from "zustand";
-
 import { getDate } from "../utils";
 
 export interface Item {
@@ -71,8 +70,8 @@ export const useReceiptStore = create<Receipt>((set) => ({
 
   removePerson: (id) => {
     set((state) => {
-      removePersonFromItem(state.items, id);
-      return { people: state.people.filter((p) => p.id !== id) };
+      const items = removePersonFromItem(state.items, id);
+      return { people: state.people.filter((p) => p.id !== id), items };
     });
   },
 
@@ -103,7 +102,7 @@ export const useReceiptStore = create<Receipt>((set) => ({
 
 export const removePersonFromItem = (items: Item[], id: number) => {
   return items.map((item) => {
-    const filtered = Object.keys(item.include).filter((i) => Number(i) === id);
+    const filtered = Object.keys(item.include).filter((i) => Number(i) !== id);
     const include = filtered.reduce((acc, person) => {
       // @ts-ignore
       acc[person] = item.include[person];

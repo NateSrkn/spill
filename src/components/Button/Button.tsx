@@ -40,8 +40,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const utilityName = `${buttonVariant}__${colorVariant}`;
     const className =
       buttonVariant === ButtonTypeVariant.TEXT
-        ? classNames(styles[utilityName])
-        : classNames(styles[buttonVariant], styles[colorVariant]);
+        ? classNames(styles[utilityName], rest.className)
+        : classNames(
+            styles[buttonVariant],
+            styles[colorVariant],
+            rest.className
+          );
     switch (buttonVariant) {
       case ButtonTypeVariant.ICON_BUTTON_WITH_TEXT: {
         return (
