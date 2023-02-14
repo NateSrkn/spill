@@ -43,6 +43,7 @@ export const PeopleSelect = ({
           colorVariant={ButtonColorVariants.PRIMARY}
           type="button"
           onClick={handleSelectAll}
+          data-cy="selectAll"
         >
           Select All
         </Button>
@@ -57,9 +58,10 @@ export const PeopleSelect = ({
           }
         )}
       >
-        {people.map((person) => (
+        {people.map((person, i) => (
           <label
             key={person.id}
+            data-cy={`include-${i}`}
             className={classNames(
               "flex items-center justify-between p-3 w-full",
               {

@@ -7,11 +7,14 @@ import {
   PerPersonBreakdown,
 } from "$/utils";
 import classNames from "classnames";
+import { useEffect, useRef } from "react";
 import { Person, useReceiptStore } from "../store";
 
 export const IndividualBreakdown = ({
   calculatedBreakdown,
+  setSelector,
 }: {
+  setSelector: (value: string) => void;
   calculatedBreakdown: FullBreakdown;
 }) => {
   const people = useReceiptStore((state) => state.people);
@@ -23,6 +26,7 @@ export const IndividualBreakdown = ({
     <ul className="hz-scroll gap-4">
       {people.map((person) => (
         <PersonCard
+          setSelector={setSelector}
           key={person.id}
           person={person}
           breakdown={calculatedBreakdown.perPerson[person.id]}
@@ -43,6 +47,7 @@ interface PersonCardProps {
   groupSize: number;
   title: string;
   date: string;
+  setSelector: (value: string) => void;
 }
 
 const PersonCard = ({
@@ -52,9 +57,37 @@ const PersonCard = ({
   groupSize,
   title,
   date,
+  setSelector,
 }: PersonCardProps) => {
+  const scrollRef = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setSelector(`#${entry.target.id}`);
+          }
+        });
+      },
+      { threshold: [0] }
+    );
+    if (scrollRef.current) {
+      observer.observe(scrollRef.current);
+    }
+    return () => {
+      if (scrollRef.current) {
+        observer.unobserve(scrollRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <li className="snapshot-block">
+    <li
+      className="snapshot-block"
+      ref={scrollRef}
+      id={`snap-${person.id.toString()}`}
+    >
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-[85%,1fr]">
           <div className="w-full">

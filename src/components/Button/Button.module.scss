@@ -19,7 +19,7 @@
 }
 
 .neutral {
-  @apply bg-gray-50 text-gray-600 border border-[#D0D5DD];
+  @apply bg-gray-100 text-gray-600 border border-[#D0D5DD];
 }
 
 .primary {
@@ -36,4 +36,8 @@
 
 .dark {
   @apply bg-[#111825] text-[#D0D5DD];
+}
+
+.none {
+  @apply bg-transparent text-current rounded-none;
 }

@@ -100,7 +100,7 @@ export const calculateBreakdown = (receipt: Receipt): FullBreakdown => {
       const total = item.shared ? item.value / sharedBetweenCount : item.value;
       simplifiedItems.push({
         title: item.shared
-          ? `${item.title} (÷) ${sharedBetweenCount}`
+          ? `${item.title} (÷  ${sharedBetweenCount})`
           : item.title,
         total,
         id: item.id,
@@ -160,3 +160,5 @@ export const clearObject = (object: Record<string, any>) =>
 export type PartialRecord<K extends keyof any, T> = {
   [P in K]?: T;
 };
+export const getGroupSize = (include: Item["include"]) =>
+  Object.values(include).filter((i) => i).length;

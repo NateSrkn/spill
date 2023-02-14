@@ -5,7 +5,8 @@ import {
   type InputHTMLAttributes,
   type HTMLInputTypeAttribute,
 } from "react";
-import style from "./Input.module.scss";
+import styles from "./Input.module.scss";
+
 export const Input = ({
   type = "text",
   asCurrency = false,
@@ -41,14 +42,15 @@ export const Input = ({
     const length = currentTarget.value.length;
     currentTarget.setSelectionRange(length, length);
   };
-  const className = classNames(style.base, rest.className, {
+  const className = classNames(styles.base, rest.className, {
     "focus:text-black text-slate-400": changeOnFocus,
   });
   return (
     <>
       {asCurrency ? (
-        <div className={style.currency}>
+        <div className={styles.currency}>
           <input
+            {...rest}
             value={value === 0 ? "0.00" : Number(value).toFixed(2)}
             className={className}
             name={name}
@@ -63,6 +65,7 @@ export const Input = ({
         </div>
       ) : (
         <input
+          {...rest}
           type={type}
           className={className}
           name={name}

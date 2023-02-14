@@ -19,6 +19,7 @@ export const TaxAndTip = ({
             className="w-full"
             asCurrency
             handleChange={handleUpdateReceiptMeta}
+            data-cy="taxInput"
           />
         </div>
         <div>
@@ -29,6 +30,7 @@ export const TaxAndTip = ({
             className="w-full"
             asCurrency
             handleChange={handleUpdateReceiptMeta}
+            data-cy="tipInput"
           />
         </div>
       </div>
