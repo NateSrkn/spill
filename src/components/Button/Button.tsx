@@ -8,6 +8,7 @@ export enum ButtonColorVariants {
   TONAL = "tonal",
   DELETE = "delete",
   DARK = "dark",
+  NONE = "none",
 }
 export enum ButtonTypeVariant {
   DEFAULT = "button",

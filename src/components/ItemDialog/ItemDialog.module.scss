@@ -72,7 +72,11 @@
 }
 
 .toggleButton {
-  @apply border border-[#D0D5DD] rounded-lg p-4 text-left;
+  @apply border border-[#D0D5DD] rounded-lg p-4 text-left flex gap-3;
+  input[type="checkbox"] {
+    @apply mt-[2px] h-5 w-5 rounded checked:bg-purple-100 border checked:border-purple-600;
+  }
+
   label {
     @apply font-medium;
   }

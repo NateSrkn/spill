@@ -209,8 +209,15 @@ const ToggleGroup = ({
         })}
         data-cy="individualSelect"
       >
-        <label>Add To Each Person</label>
-        <div>Applies full amount to each person</div>
+        <input
+          type="checkbox"
+          value={SharedStateEnum.INDIVIDUAL}
+          checked={!values.shared}
+        ></input>
+        <div>
+          <label>Add To Each Person</label>
+          <div>Applies full amount to each person</div>
+        </div>
       </ToggleGroupPrimitive.Item>
       <ToggleGroupPrimitive.Item
         value={SharedStateEnum.SHARED}
@@ -219,8 +226,15 @@ const ToggleGroup = ({
         })}
         data-cy="sharedSelect"
       >
-        <label>Split Evenly</label>
-        <div>Divides amount among group</div>
+        <input
+          type="checkbox"
+          value={SharedStateEnum.INDIVIDUAL}
+          checked={values.shared}
+        ></input>
+        <div>
+          <label>Split Evenly</label>
+          <div>Divides amount among group</div>
+        </div>
       </ToggleGroupPrimitive.Item>
     </ToggleGroupPrimitive.Root>
   );
