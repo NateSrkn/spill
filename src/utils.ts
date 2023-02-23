@@ -70,7 +70,7 @@ const getRelatedItems = (items: Item[], id: number) =>
 export const calculateBreakdown = (receipt: Receipt): FullBreakdown => {
   const subtotal = receipt.items.reduce((sum, item) => {
     const includeSize = Object.keys(item.include).filter((i) => i).length;
-    const value = item.value * item.quantity;
+    const value = item.shared ? item.value : item.value * includeSize;
     if (includeSize) {
       return value + sum;
     }
@@ -98,8 +98,8 @@ export const calculateBreakdown = (receipt: Receipt): FullBreakdown => {
       const sharedBetweenCount = Object.values(item.include).filter(
         (i) => i
       ).length;
-
-      const total = item.shared ? item.value / sharedBetweenCount : item.value;
+      const value = item.value;
+      const total = item.shared ? item.value / sharedBetweenCount : value;
       simplifiedItems.push({
         title: item.shared
           ? `${item.title} (÷  ${sharedBetweenCount})`

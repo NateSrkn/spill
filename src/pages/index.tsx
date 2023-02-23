@@ -10,7 +10,6 @@ import { Share } from "../components/Share";
 export default function Home() {
   const receipt = useReceiptStore();
   const updateReceiptMeta = useReceiptStore((state) => state.updateMeta);
-
   return (
     <>
       <Head>

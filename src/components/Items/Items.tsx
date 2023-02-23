@@ -2,7 +2,7 @@ import { ItemDialog } from "../ItemDialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Button, ButtonColorVariants, ButtonTypeVariant } from "../Button";
 import { FiEdit, FiMoreVertical, FiTrash, FiUsers } from "react-icons/fi";
-import { Item, Person, useReceiptStore } from "../../store";
+import { Item, Item, Person, useReceiptStore } from "../../store";
 import { useState } from "react";
 import {
   currencyFormatter,
@@ -18,59 +18,14 @@ export const Items = () => {
       return acc;
     }, {} as { [key: number]: Person })
   );
-  const removeItem = useReceiptStore((state) => state.removeItem);
-  const getCostDisplayText = (item: Item) => {
-    let base = currencyFormatter.format(item.value);
-    const groupSize = getGroupSize(item.include);
-    if (item.shared) {
-      base += ` (÷ ${groupSize})`;
-    } else if (groupSize >= 2 && !item.shared) {
-      base += " each";
-    }
-    return base;
-  };
 
   return (
-    <section className="grouped-block flex-col gap-4">
+    <section className="grouped-block flex-col">
       <h2 className="subheader">Items</h2>
       {items.length ? (
-        <ul className="flex flex-col gap-4">
+        <ul className="divide-y-[1px] divide-[var(--outline)] pb-3">
           {items.map((item) => (
-            <li key={item.id}>
-              <section className="border border-[var(--outline)] rounded-lg">
-                <div className="border-b border-b-[var(--outline)] py-3 px-4 flex gap-4 justify-between items-center">
-                  <div className="truncate">
-                    <h4 className="font-medium truncate">{item.title}</h4>
-                    <div className="truncate subtext">
-                      {getCostDisplayText(item)}
-                    </div>
-                  </div>
-                  <div className="flex items-center">
-                    {getGroupSize(item.include) >= 2 ? (
-                      <div className="badge neutral">
-                        <span>
-                          <FiUsers />
-                        </span>
-                        <span>{getGroupSize(item.include)}</span>
-                      </div>
-                    ) : null}
-                    <ItemDropdown
-                      item={item}
-                      removeItem={() => removeItem(item.id)}
-                    />
-                  </div>
-                </div>
-                <ul className="flex flex-wrap gap-2 text-sm px-2 py-2">
-                  {Object.keys(item.include).map((id) =>
-                    item.include[Number(id)] ? (
-                      <li key={id} className="tonal badge">
-                        {getFirstNameAndInitial(people[Number(id)].name)}
-                      </li>
-                    ) : null
-                  )}
-                </ul>
-              </section>
-            </li>
+            <Item key={item.id} item={item} people={people} />
           ))}
         </ul>
       ) : null}
@@ -85,6 +40,50 @@ export const Items = () => {
         }
       />
     </section>
+  );
+};
+
+const Item = ({ item, people }: { item: Item; people: any }) => {
+  const removeItem = useReceiptStore((state) => state.removeItem);
+  const getCostDisplayText = (item: Item) => {
+    let base = currencyFormatter.format(item.value);
+    const groupSize = getGroupSize(item.include);
+    if (item.shared) {
+      base += ` (÷ ${groupSize})`;
+    } else if (groupSize >= 2 && !item.shared) {
+      base += " each";
+    }
+    return base;
+  };
+  return (
+    <li className="flex flex-col gap-3 py-3">
+      <div className="flex gap-4 justify-between items-center">
+        <div className="truncate">
+          <h4 className="subtext-header truncate">{item.title}</h4>
+          <div className="truncate subtext">{getCostDisplayText(item)}</div>
+        </div>
+        <div className="flex items-center">
+          {getGroupSize(item.include) >= 2 ? (
+            <div className="badge neutral">
+              <span>
+                <FiUsers />
+              </span>
+              <span>{getGroupSize(item.include)}</span>
+            </div>
+          ) : null}
+          <ItemDropdown item={item} removeItem={() => removeItem(item.id)} />
+        </div>
+      </div>
+      <ul className="flex flex-wrap gap-2 text-sm">
+        {Object.keys(item.include).map((id) =>
+          item.include[Number(id)] ? (
+            <li key={id} className="tonal badge">
+              {getFirstNameAndInitial(people[Number(id)].name)}
+            </li>
+          ) : null
+        )}
+      </ul>
+    </li>
   );
 };
 

@@ -84,35 +84,34 @@ export const ItemDialog = React.forwardRef(function ItemDialog(
               {isEdit ? "Edit Item" : "Add Item"}
             </Title>
             <section className="flex flex-col gap-4 mb-20">
-              <fieldset className={styles.fieldset}>
-                <div>
-                  <label className="Label" htmlFor="title">
-                    Item
-                  </label>
-                </div>
-                <Input
-                  id="title"
-                  name="title"
-                  data-cy="addInputTitle"
-                  value={values.title}
-                  onBlur={handleBlur}
-                  handleChange={(name, value) =>
-                    handleChange({ currentTarget: { name, value } })
-                  }
-                  data-error={errors.title && touched.title}
-                />
-                {errors.title && touched.title ? (
-                  <div className="text-[var(--error)] text-sm">
-                    {errors.title}
+              <section className="grid grid-cols-2 gap-4 w-full items-baseline">
+                <fieldset className={styles.fieldset}>
+                  <div>
+                    <label className="Label" htmlFor="title">
+                      Item
+                    </label>
                   </div>
-                ) : null}
-              </fieldset>
-              <section className="grid grid-cols-2 gap-4 w-full">
+                  <Input
+                    id="title"
+                    name="title"
+                    data-cy="addInputTitle"
+                    value={values.title}
+                    onBlur={handleBlur}
+                    handleChange={(name, value) =>
+                      handleChange({ currentTarget: { name, value } })
+                    }
+                    data-error={errors.title && touched.title}
+                  />
+                  {errors.title && touched.title ? (
+                    <div className="text-[var(--error)] text-sm">
+                      {errors.title}
+                    </div>
+                  ) : null}
+                </fieldset>
                 <fieldset className={styles.fieldset}>
                   <label className="Label" htmlFor="value">
                     Amount
                   </label>
-
                   <Input
                     id="value"
                     asCurrency
@@ -129,29 +128,6 @@ export const ItemDialog = React.forwardRef(function ItemDialog(
                   {errors.value && touched.value ? (
                     <div className="text-[var(--error)] text-sm">
                       {errors.value}
-                    </div>
-                  ) : null}
-                </fieldset>
-                <fieldset className={styles.fieldset}>
-                  <label className="Label" htmlFor="quantity">
-                    Quantity
-                  </label>
-                  <Input
-                    id="quantity"
-                    name="quantity"
-                    type="number"
-                    value={values.quantity}
-                    onBlur={handleBlur}
-                    data-cy="addInputQuantity"
-                    min={1}
-                    handleChange={(name, value) =>
-                      handleChange({ currentTarget: { name, value } })
-                    }
-                    data-error={errors.quantity && touched.quantity}
-                  />
-                  {errors.quantity && touched.quantity ? (
-                    <div className="text-[var(--error)] text-sm">
-                      {errors.quantity}
                     </div>
                   ) : null}
                 </fieldset>

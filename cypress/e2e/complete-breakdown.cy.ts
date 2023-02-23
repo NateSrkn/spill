@@ -104,7 +104,7 @@ describe("Bearded Lady", () => {
     cy.dataCy("addInputTitle").as("title");
     cy.dataCy("addInputValue").as("value");
     cy.dataCy("item-submit").as("submit");
-    cy.dataCy("addInputQuantity").as("quantity");
+    // cy.dataCy("addInputQuantity").as("quantity");
     cy.dataCy("sharedSelect").as("shared");
 
     cy.get("@title").type("Burning Bush");
@@ -137,7 +137,7 @@ describe("Bearded Lady", () => {
 
     cy.get("@title").type("Veggie Dog");
     cy.get("@value").type("6.00");
-    cy.get("@quantity").type("2");
+    // cy.get("@quantity").type("2");
     cy.contains("Emily Prusak").click();
     cy.contains("Nathan Sorkin").click();
     cy.dataCy("item-submit").click();
@@ -146,7 +146,7 @@ describe("Bearded Lady", () => {
 
     cy.get("@title").type("Grilled Cheese");
     cy.get("@value").type("6.00");
-    cy.get("@quantity").type("2");
+    // cy.get("@quantity").type("2");
     cy.contains("Dane Galbraith").click();
     cy.contains("Abbey Heslep").click();
     cy.dataCy("item-submit").click();
