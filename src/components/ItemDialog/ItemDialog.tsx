@@ -8,7 +8,7 @@ import { Input } from "../Input";
 import { Formik } from "formik";
 import { PeopleSelect } from "../PeopleSelect";
 import { useReceiptStore } from "../../store";
-import { PartialRecord } from "../../utils";
+import { currencyFormatter, getGroupSize, PartialRecord } from "../../utils";
 import Dialog from "../Dialog/Dialog";
 interface ItemDialogProps {
   trigger: React.ReactNode;
@@ -42,6 +42,17 @@ export const ItemDialog = React.forwardRef(function ItemDialog(
     setOpen(isOpen);
   };
 
+  type CostParams = {
+    shared: boolean;
+    value: number;
+    groupSize: number;
+  };
+
+  const getCostPerPerson = ({ shared, value, groupSize }: CostParams) =>
+    currencyFormatter.format(shared ? value : value * groupSize);
+
+  const getItemTotalCost = ({ shared, value, groupSize }: CostParams) =>
+    currencyFormatter.format(shared ? value : value * groupSize);
   return (
     <Dialog trigger={Trigger} open={open} onOpenChange={handleOpenChange}>
       <Formik
@@ -140,20 +151,27 @@ export const ItemDialog = React.forwardRef(function ItemDialog(
               >
                 <input
                   type="checkbox"
-                  className="form-checkbox"
+                  className="form-checkbox mt-1"
                   value={SharedStateEnum.INDIVIDUAL}
                   checked={values.shared}
                   name="shared"
                   id="shared"
                   onChange={handleChange}
                 ></input>
-                <div>
-                  <h3 className="subtext-header">Was this a shared item?</h3>
-                  <div>Divides amount among group</div>
+                <div className="text-base">
+                  <h3>Was this a shared item?</h3>
+                  <div className="text-sm subtext">
+                    Divides amount among group
+                  </div>
                 </div>
               </label>
               <PeopleSelect
                 include={values.include}
+                price={getCostPerPerson({
+                  shared: values.shared,
+                  value: values.value,
+                  groupSize: getGroupSize(values.include),
+                })}
                 handleChange={handleChange}
                 error={errors.include}
                 touched={touched.include}
@@ -174,7 +192,13 @@ export const ItemDialog = React.forwardRef(function ItemDialog(
                 type="submit"
                 data-cy="item-submit"
               >
-                Save item
+                Add item (
+                {getItemTotalCost({
+                  value: values.value,
+                  shared: values.shared,
+                  groupSize: getGroupSize(values.include),
+                })}
+                )
               </Button>
             </div>
           </form>

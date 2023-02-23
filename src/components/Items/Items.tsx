@@ -106,7 +106,7 @@ const ItemDropdown = ({
         </Button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
-        <DropdownMenu.Content className="bg-[var(--background)] flex flex-col p-2 max-w-xs w-32 rounded-md border space-y-1 text-sm">
+        <DropdownMenu.Content className="bg-[var(--background)] flex flex-col p-2 max-w-xs w-32 rounded-md border border-[var(--outline)] space-y-1 text-sm">
           <DropdownMenu.Item asChild>
             <button
               className="text-left flex items-center gap-2 py-1 px-2 hover:bg-red-100 hover:text-red-600 transition-colors rounded"
@@ -119,7 +119,7 @@ const ItemDropdown = ({
           <DropdownMenu.Item asChild>
             <ItemDialog
               trigger={
-                <button className="text-left flex items-center gap-2 py-1 px-2 hover:bg-zinc-100 transition-colors rounded">
+                <button className="text-left flex items-center gap-2 py-1 px-2 rounded">
                   <FiEdit />
                   Edit Item
                 </button>

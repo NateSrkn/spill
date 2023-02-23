@@ -9,11 +9,13 @@ import { useReceiptStore } from "../../store";
 export const PeopleSelect = ({
   include,
   handleChange,
+  price,
   error,
   touched,
 }: {
   include: Include;
   handleChange: ChangeEventHandler<HTMLInputElement>;
+  price: string;
   error?: FormikErrors<Include> | any;
   touched?: FormikTouched<Include> | any;
 }) => {
@@ -36,7 +38,9 @@ export const PeopleSelect = ({
   return (
     <fieldset className="flex flex-col gap-2">
       <div className="flex justify-between">
-        <label htmlFor="included">Include</label>
+        <label className="subtext-header" htmlFor="included">
+          Select People
+        </label>
         {hasError ? (
           <div className="text-[var(--error)] text-sm">{error}</div>
         ) : null}
@@ -47,7 +51,7 @@ export const PeopleSelect = ({
           onClick={handleSelectAll}
           data-cy="selectAll"
         >
-          Select All
+          Add all
         </Button>
       </div>
       <div
@@ -68,27 +72,20 @@ export const PeopleSelect = ({
             )}
           >
             <div className="flex items-center gap-2">
-              <div
-                className="avatar flex-shrink-0 tonal"
-                style={
-                  {
-                    "--avatar-size": "24px",
-                  } as React.CSSProperties
-                }
-              >
-                {getInitials(person.name)}
+              <input
+                type="checkbox"
+                className="form-checkbox"
+                name={`include[${person.id}]`}
+                value={include[person.id]}
+                checked={include[person.id]}
+                onChange={handleChange}
+              />
+              <div className="flex items-center gap-2">
+                <div>{person.name}</div>
               </div>
-              <div>{person.name}</div>
             </div>
-            <input
-              type="checkbox"
-              className="hidden"
-              name={`include[${person.id}]`}
-              value={include[person.id] as any}
-              onChange={handleChange}
-            />
             {include[person.id] && (
-              <FiCheck className="text-[var(--primary)]" />
+              <span className="text-[var(--primary)]">+{price}</span>
             )}
           </label>
         ))}

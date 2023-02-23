@@ -105,6 +105,7 @@
     font-family: var(--primary-font);
     letter-spacing: var(--letter-spacing);
     scroll-behavior: smooth;
+    font-smooth: always;
   }
 
   body {
@@ -218,11 +219,24 @@
 
   [type="checkbox"]:checked {
     background-image: url('data:image/svg+xml,<svg viewBox="0 0 16 16" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z"/></svg>');
+  }
 
-    @media (prefers-color-scheme: dark) {
-      background-image: url('data:image/svg+xml,<svg viewBox="0 0 16 16" fill="black" xmlns="http://www.w3.org/2000/svg"><path d="M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z"/></svg>');
+  [data-theme="dark"] [type="checkbox"]:checked {
+    background-image: url('data:image/svg+xml,<svg viewBox="0 0 16 16" fill="black" xmlns="http://www.w3.org/2000/svg"><path d="M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z"/></svg>');
+  }
+
+  input[type="checkbox"] {
+    @apply h-4 w-4 rounded;
+    border: var(--border-width) solid var(--outline);
+    background-color: transparent;
+    color: var(--primary-container-content);
+    &:checked {
+      @apply outline-none ring-0;
+      background-color: var(--primary-container-content);
+      border-color: var(--primary-container-content);
     }
   }
+
   .badge {
     @apply flex justify-center items-center gap-2 py-1 px-3 rounded-2xl text-sm font-medium;
   }
