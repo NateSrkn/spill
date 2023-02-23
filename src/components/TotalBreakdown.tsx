@@ -2,7 +2,6 @@ import classNames from "classnames";
 
 import { useReceiptStore } from "$/store";
 import {
-  formatDateForDisplay,
   getFirstNameAndInitial,
   FullBreakdown,
   currencyFormatter,
@@ -21,15 +20,15 @@ export const TotalBreakdown = ({
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-[85%,1fr]">
           <div className="w-full">
-            <h2 className="text-3xl truncate">
+            <h2 className="main-header truncate" data-cy="grossTotal">
               {calculatedBreakdown.grossTotal}
             </h2>
-            <p className="text-[#D0D5DD]">
+            <p className="subtext">
               Shared with {receipt.people.length} people
             </p>
           </div>
           <div
-            className={classNames("flex-shrink-0 avatar", {
+            className={classNames("flex-shrink-0 avatar neutral", {
               emoji: receipt.avatar,
               text: !receipt.avatar,
             })}
@@ -40,13 +39,13 @@ export const TotalBreakdown = ({
         <div className="w-full grid grid-cols-2 gap-2">
           {receipt.people.map((person) => (
             <div
-              className="flex flex-col p-4 justify-center rounded-lg tonal"
+              className="flex flex-col p-4 justify-center rounded-lg neutral"
               key={person.name}
             >
-              <div className="text-sm">
+              <div className="font-medium">
                 {getFirstNameAndInitial(person.name)}
               </div>
-              <div className="text-[18px] font-semibold truncate">
+              <div className=" truncate subtext">
                 {currencyFormatter.format(
                   calculatedBreakdown.perPerson[person.id]?.gross || 0
                 )}
@@ -54,9 +53,8 @@ export const TotalBreakdown = ({
             </div>
           ))}
         </div>
-        <div className="text-[#667085] flex justify-between pt-4">
+        <div className="subtext flex justify-between pt-4">
           <div>{receipt.title}</div>
-          <div>{receipt.date ? formatDateForDisplay(receipt.date) : ""}</div>
         </div>
       </div>
     </section>

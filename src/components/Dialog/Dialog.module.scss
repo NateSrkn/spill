@@ -1,0 +1,60 @@
+.overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  inset: 0;
+  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.content {
+  --position: 0px;
+  position: fixed;
+  background-color: var(--background);
+  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
+    hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+  overflow: auto;
+  width: 100%;
+  top: auto;
+  height: auto;
+  bottom: var(--position);
+  transform: translateY(var(--position));
+  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  @apply rounded-b-none rounded-t-2xl max-h-[85vh];
+  @media (min-width: 768px) {
+    @apply rounded-[28px];
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    max-width: 450px;
+    animation: showContentDesktop 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+@keyframes overlayShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes showContentDesktop {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -30%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes showContentMobile {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -13,9 +13,9 @@ export const ReceiptMeta = ({
   ) => void;
 }) => {
   return (
-    <section className="grouped-block justify-center items-center gap-4">
+    <section className="grouped-block justify-center items-center gap-2">
       <div
-        className="avatar"
+        className="avatar neutral"
         style={
           {
             "--font-size": receipt.avatar ? "32px" : "20px",
@@ -33,16 +33,6 @@ export const ReceiptMeta = ({
         name="title"
         changeOnFocus={false}
         value={receipt.title}
-        handleChange={handleUpdateReceiptMeta}
-      />
-      <label className="sr-only" htmlFor="date">
-        Date
-      </label>
-      <Input
-        className="text-center max-w-[170px]"
-        type="date"
-        value={receipt.date}
-        name="date"
         handleChange={handleUpdateReceiptMeta}
       />
     </section>

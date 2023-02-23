@@ -3,9 +3,9 @@
 }
 
 .counter {
-  @apply flex gap-4 justify-center items-center;
+  @apply flex gap-2 justify-center items-center;
   .count {
-    @apply bg-none border border-[#D0D5DD] rounded-lg py-2 px-6 text-center outline-none focus:outline-none tracking-tighter proportional-nums w-full max-w-min;
+    @apply bg-zinc-100 rounded-lg py-2 px-6 text-center outline-none focus:outline-none tracking-tighter proportional-nums w-[68px] max-w-[68px];
   }
   button {
     --icon-size: 32px;

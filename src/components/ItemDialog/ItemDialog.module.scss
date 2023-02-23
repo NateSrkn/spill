@@ -1,5 +1,5 @@
 .overlay {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: var(--modal-scrim);
   position: fixed;
   inset: 0;
   animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -8,9 +8,7 @@
 .content {
   --position: 0px;
   position: fixed;
-  background-color: white;
-  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
-    hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+  background-color: var(--background);
   overflow: auto;
   width: 100%;
   height: auto;
@@ -36,35 +34,16 @@
   --position: 0px;
   bottom: var(--position);
   transform: translateY(var(--position));
-  @apply flex gap-4 fixed  w-full p-4 left-0 bg-white border-t justify-end;
+  background: var(--background);
+  @apply flex gap-4 fixed w-full p-4 left-0 border-t border-[var(--outline)] justify-end;
 }
 
 .title {
-  @apply text-2xl font-medium text-[#6941C6] pb-4;
+  @apply text-2xl font-medium pb-4;
 }
 
 .fieldset {
   @apply flex flex-col gap-2;
-}
-
-@keyframes overlayShow {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes contentShow {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -48%) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
 }
 
 .toggleGroup {
@@ -72,21 +51,45 @@
 }
 
 .toggleButton {
-  @apply border border-[#D0D5DD] rounded-lg p-4 text-left flex gap-3;
+  border: var(--border-width) solid var(--outline);
+  &:hover {
+    background-color: var(--neutral-hover);
+  }
+
+  &:active {
+    background-color: var(--neutral-press);
+  }
+
+  &[aria-checked="true"] {
+    border-color: var(--primary-container-content);
+    background-color: var(--primary-container);
+    &:hover {
+      background-color: var(--selected-hover);
+      border-color: var(--selected-content);
+    }
+    &:active {
+      background-color: var(--selected-press);
+      border-color: var(--selected-content);
+    }
+  }
+
+  @apply rounded-lg p-4 text-left flex gap-3 transition-all duration-100;
+
   input[type="checkbox"] {
-    @apply mt-[2px] h-5 w-5 rounded checked:bg-purple-100 border checked:border-purple-600;
+    @apply mt-[2px] h-5 w-5 rounded;
+    border: var(--border-width) solid var(--outline);
+    background-color: transparent;
+    &:checked {
+      @apply outline-none ring-0;
+      background-color: var(--primary-container-content);
+      border-color: var(--primary-container-content);
+    }
   }
 
   label {
     @apply font-medium;
   }
   div {
-    @apply text-[#667085];
-  }
-  &.active {
-    @apply border-[#D6BBFB] bg-[#F9F5FF];
-    label {
-      @apply text-[#53389E];
-    }
+    @apply text-[var(--secondary-text)];
   }
 }

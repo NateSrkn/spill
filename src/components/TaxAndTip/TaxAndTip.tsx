@@ -9,7 +9,7 @@ export const TaxAndTip = ({
   const [tax, tip] = useReceiptStore((state) => [state.tax, state.tip]);
   return (
     <section className="grouped-block gap-4 w-full">
-      <h3>Tax and Tip</h3>
+      <h2 className="subheader">Tax and Tip</h2>
       <div className="grid grid-cols-[1fr,1fr] gap-4">
         <div>
           <label htmlFor="tax">Tax</label>

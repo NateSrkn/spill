@@ -15,7 +15,9 @@ import { TotalBreakdown } from "../TotalBreakdown";
 import styles from "./Share.module.scss";
 
 export const Share = ({ receipt }: { receipt: Receipt }) => {
-  const [billSplitMode, setBillSplitMode] = useState(BillSplitModesEnum.TOTAL);
+  const [billSplitMode, setBillSplitMode] = useState(
+    BillSplitModesEnum.SUMMARY
+  );
   const [selector, setSelector] = useState(".snapshot-block");
   const resetReceipt = useReceiptStore((state) => state.reset);
   const calculatedBreakdown = useMemo(
@@ -24,23 +26,25 @@ export const Share = ({ receipt }: { receipt: Receipt }) => {
   );
 
   const shareAsImage = async () => {
-    const shareBlock = document.querySelector<HTMLElement>(selector);
+    const currentSelector =
+      billSplitMode === BillSplitModesEnum.SUMMARY
+        ? ".snapshot-block"
+        : selector;
+    const shareBlock = document.querySelector<HTMLElement>(currentSelector);
     if (!shareBlock) return;
-    const prevBorder = shareBlock.style.borderRadius;
+    const prevBorderRadius = shareBlock.style.borderRadius;
+    const prevBorder = shareBlock.style.border;
     shareBlock.style.borderRadius = "0px";
-
+    shareBlock.style.border = "none";
     try {
       await convertToImage(shareBlock, (blob) => {
-        shareBlock.style.borderRadius = prevBorder;
+        shareBlock.style.borderRadius = prevBorderRadius;
+        shareBlock.style.border = prevBorder;
         if (!blob) return;
         if (navigator.share) {
-          const file = new File(
-            [blob],
-            `${receipt.date}_${toPascalCase(receipt.title)}.jpg`,
-            {
-              type: "image/jpeg",
-            }
-          );
+          const file = new File([blob], `${toPascalCase(receipt.title)}.jpg`, {
+            type: "image/jpeg",
+          });
           navigator
             .share({
               title: receipt.title,
@@ -67,10 +71,10 @@ export const Share = ({ receipt }: { receipt: Receipt }) => {
         billSplitMode={billSplitMode}
         setBillSplitMode={setBillSplitMode}
       />
-      {billSplitMode === BillSplitModesEnum.TOTAL && (
+      {billSplitMode === BillSplitModesEnum.SUMMARY && (
         <TotalBreakdown calculatedBreakdown={calculatedBreakdown} />
       )}
-      {billSplitMode === BillSplitModesEnum.INDIVIDUAL && (
+      {billSplitMode === BillSplitModesEnum.BREAKDOWN && (
         <IndividualBreakdown
           calculatedBreakdown={calculatedBreakdown}
           setSelector={setSelector}
@@ -80,7 +84,7 @@ export const Share = ({ receipt }: { receipt: Receipt }) => {
       <section className={styles.buttonGroup}>
         <Button
           buttonVariant={ButtonTypeVariant.ICON_BUTTON_WITH_TEXT}
-          colorVariant={ButtonColorVariants.DARK}
+          colorVariant={ButtonColorVariants.NONE}
           icon={FiDownload}
           onClick={() => shareAsImage()}
         >
@@ -88,11 +92,12 @@ export const Share = ({ receipt }: { receipt: Receipt }) => {
         </Button>
         <Button
           buttonVariant={ButtonTypeVariant.ICON_BUTTON_WITH_TEXT}
-          colorVariant={ButtonColorVariants.DARK}
+          colorVariant={ButtonColorVariants.NONE}
           icon={FiRotateCcw}
           onClick={resetReceipt}
+          data-cy="resetReceipt"
         >
-          Restart
+          Start Over
         </Button>
       </section>
     </section>
@@ -110,26 +115,26 @@ const ToggleGroup = ({
     <ToggleGroupPrimitive.Root
       type="single"
       className={styles.toggleGroup}
-      defaultValue={BillSplitModesEnum.TOTAL}
+      defaultValue={BillSplitModesEnum.SUMMARY}
       onValueChange={(value: BillSplitModesEnum) =>
         value ? setBillSplitMode(value) : null
       }
     >
       <ToggleGroupPrimitive.Item
-        value={BillSplitModesEnum.TOTAL}
+        value={BillSplitModesEnum.SUMMARY}
         className={classNames(styles.toggleButton, "rounded-l-lg", {
-          [styles.active]: billSplitMode === BillSplitModesEnum.TOTAL,
+          [styles.active]: billSplitMode === BillSplitModesEnum.SUMMARY,
         })}
       >
-        Total
+        Summary
       </ToggleGroupPrimitive.Item>
       <ToggleGroupPrimitive.Item
-        value={BillSplitModesEnum.INDIVIDUAL}
+        value={BillSplitModesEnum.BREAKDOWN}
         className={classNames(styles.toggleButton, "rounded-r-lg", {
-          [styles.active]: billSplitMode === BillSplitModesEnum.INDIVIDUAL,
+          [styles.active]: billSplitMode === BillSplitModesEnum.BREAKDOWN,
         })}
       >
-        Individual
+        Breakdown
       </ToggleGroupPrimitive.Item>
     </ToggleGroupPrimitive.Root>
   );

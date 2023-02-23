@@ -1,10 +1,25 @@
 .base {
-  @apply rounded-lg border-[#D0D5DD] border p-[12px] w-full;
+  width: 100%;
+  background-color: var(--background);
+  border: var(--border-width) solid var(--outline);
+  color: var(--secondary-text);
+  &:focus {
+    color: var(--primary-text);
+  }
+
+  @apply rounded-lg p-[12px] focus:ring-1 focus:ring-[var(--primary)]  data-[error="true"]:ring-1 data-[error="true"]:ring-[var(--error)];
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  -moz-appearance: textfield;
 }
+
 .currency {
   display: grid;
   align-items: center;
-  @apply text-slate-400;
   i {
     grid-area: 1/1;
     pointer-events: none;

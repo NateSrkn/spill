@@ -9,6 +9,7 @@ import {
   getFirstNameAndInitial,
   getGroupSize,
 } from "../../utils";
+
 export const Items = () => {
   const items = useReceiptStore((state) => state.items);
   const people = useReceiptStore((store) =>
@@ -17,6 +18,32 @@ export const Items = () => {
       return acc;
     }, {} as { [key: number]: Person })
   );
+
+  return (
+    <section className="grouped-block flex-col">
+      <h2 className="subheader">Items</h2>
+      {items.length ? (
+        <ul className="divide-y-[1px] divide-[var(--outline)] pb-3">
+          {items.map((item) => (
+            <ListItem key={item.id} item={item} people={people} />
+          ))}
+        </ul>
+      ) : null}
+      <ItemDialog
+        trigger={
+          <Button
+            colorVariant={ButtonColorVariants.PRIMARY}
+            data-cy="addItemButton"
+          >
+            Add Item
+          </Button>
+        }
+      />
+    </section>
+  );
+};
+
+const ListItem = ({ item, people }: { item: Item; people: any }) => {
   const removeItem = useReceiptStore((state) => state.removeItem);
   const getCostDisplayText = (item: Item) => {
     let base = currencyFormatter.format(item.value);
@@ -28,60 +55,35 @@ export const Items = () => {
     }
     return base;
   };
-
   return (
-    <section className="grouped-block flex-col gap-4">
-      <h3>Items</h3>
-      {items.length ? (
-        <ul className="flex flex-col gap-4">
-          {items.map((item) => (
-            <li
-              key={item.id}
-              className="border border-[#D0D5DD] rounded-lg relative "
-            >
-              <section>
-                <div className="border-b  border-b-[#D0D5DD] py-3 px-4 flex gap-4 justify-between items-center">
-                  <div className="truncate">
-                    <h4 className="font-medium truncate">{item.title}</h4>
-                    <div className="truncate text-[#667085]">
-                      {getCostDisplayText(item)}
-                    </div>
-                  </div>
-                  <div className="flex items-center">
-                    {getGroupSize(item.include) >= 2 ? (
-                      <div className="badge text-purple-600 bg-purple-100">
-                        <span>
-                          <FiUsers />
-                        </span>
-                        <span>{getGroupSize(item.include)}</span>
-                      </div>
-                    ) : null}
-                    <ItemDropdown
-                      item={item}
-                      removeItem={() => removeItem(item.id)}
-                    />
-                  </div>
-                </div>
-                <ul className="flex flex-wrap gap-2 text-sm px-2 py-2">
-                  {Object.keys(item.include).map((id) =>
-                    item.include[Number(id)] ? (
-                      <li key={id} className="bg-gray-100 badge">
-                        {getFirstNameAndInitial(people[Number(id)].name)}
-                      </li>
-                    ) : null
-                  )}
-                </ul>
-              </section>
+    <li className="flex flex-col gap-3 py-3">
+      <div className="flex gap-4 justify-between items-center">
+        <div className="truncate">
+          <h4 className="subtext-header truncate">{item.title}</h4>
+          <div className="truncate subtext">{getCostDisplayText(item)}</div>
+        </div>
+        <div className="flex items-center">
+          {getGroupSize(item.include) >= 2 ? (
+            <div className="badge neutral">
+              <span>
+                <FiUsers />
+              </span>
+              <span>{getGroupSize(item.include)}</span>
+            </div>
+          ) : null}
+          <ItemDropdown item={item} removeItem={() => removeItem(item.id)} />
+        </div>
+      </div>
+      <ul className="flex flex-wrap gap-2 text-sm">
+        {Object.keys(item.include).map((id) =>
+          item.include[Number(id)] ? (
+            <li key={id} className="tonal badge">
+              {getFirstNameAndInitial(people[Number(id)].name)}
             </li>
-          ))}
-        </ul>
-      ) : null}
-      <ItemDialog
-        trigger={
-          <Button colorVariant={ButtonColorVariants.TONAL}>Add Item</Button>
-        }
-      />
-    </section>
+          ) : null
+        )}
+      </ul>
+    </li>
   );
 };
 
@@ -104,7 +106,7 @@ const ItemDropdown = ({
         </Button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
-        <DropdownMenu.Content className="bg-white flex flex-col p-2 max-w-xs w-32 rounded-md border space-y-1 text-sm">
+        <DropdownMenu.Content className="bg-[var(--background)] flex flex-col p-2 max-w-xs w-32 rounded-md border space-y-1 text-sm">
           <DropdownMenu.Item asChild>
             <button
               className="text-left flex items-center gap-2 py-1 px-2 hover:bg-red-100 hover:text-red-600 transition-colors rounded"
@@ -117,7 +119,7 @@ const ItemDropdown = ({
           <DropdownMenu.Item asChild>
             <ItemDialog
               trigger={
-                <button className="text-left flex items-center gap-2 py-1 px-2 hover:bg-gray-100 transition-colors rounded">
+                <button className="text-left flex items-center gap-2 py-1 px-2 hover:bg-zinc-100 transition-colors rounded">
                   <FiEdit />
                   Edit Item
                 </button>
