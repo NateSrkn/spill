@@ -49,7 +49,7 @@ export const ItemDialog = React.forwardRef(function ItemDialog(
   };
 
   const getCostPerPerson = ({ shared, value, groupSize }: CostParams) =>
-    currencyFormatter.format(shared ? value : value * groupSize);
+    currencyFormatter.format(shared ? value / groupSize : value);
 
   const getItemTotalCost = ({ shared, value, groupSize }: CostParams) =>
     currencyFormatter.format(shared ? value : value * groupSize);
