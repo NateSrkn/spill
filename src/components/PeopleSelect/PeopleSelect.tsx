@@ -35,9 +35,11 @@ export const PeopleSelect = ({
 
   return (
     <fieldset className="flex flex-col gap-2">
-      {hasError ? <div className="text-red-600 text-sm">{error}</div> : null}
       <div className="flex justify-between">
         <label htmlFor="included">Include</label>
+        {hasError ? (
+          <div className="text-[var(--error)] text-sm">{error}</div>
+        ) : null}
         <Button
           buttonVariant={ButtonTypeVariant.TEXT}
           colorVariant={ButtonColorVariants.PRIMARY}
@@ -51,27 +53,23 @@ export const PeopleSelect = ({
       <div
         role="group"
         aria-labelledby="checkbox-group"
-        className={classNames(
-          "border-[#EAECF0] border rounded-lg flex flex-col",
-          {
-            "border-none ring ring-red-600": hasError,
-          }
-        )}
+        data-error={!!error && !!touched}
+        className="bordered rounded-lg flex flex-col py-2 data-[error='true']:ring-1 data-[error='true']:ring-[var(--error)]"
       >
         {people.map((person, i) => (
           <label
             key={person.id}
             data-cy={`include-${i}`}
             className={classNames(
-              "flex items-center justify-between p-3 w-full",
+              "flex items-center justify-between p-3 w-full hover:bg-[var(--neutral-hover)] active:bg-[var(--neutral-press)]",
               {
-                "bg-[#F9FAFB]": include[person.id],
+                "bg-[var(--neutral-selected)]": include[person.id],
               }
             )}
           >
             <div className="flex items-center gap-2">
               <div
-                className="avatar flex-shrink-0"
+                className="avatar flex-shrink-0 tonal"
                 style={
                   {
                     "--avatar-size": "24px",
@@ -89,7 +87,9 @@ export const PeopleSelect = ({
               value={include[person.id] as any}
               onChange={handleChange}
             />
-            {include[person.id] && <FiCheck className="text-purple-600" />}
+            {include[person.id] && (
+              <FiCheck className="text-[var(--primary)]" />
+            )}
           </label>
         ))}
       </div>

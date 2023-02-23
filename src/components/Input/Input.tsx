@@ -42,9 +42,7 @@ export const Input = ({
     const length = currentTarget.value.length;
     currentTarget.setSelectionRange(length, length);
   };
-  const className = classNames(styles.base, rest.className, {
-    "focus:text-black text-slate-400": changeOnFocus,
-  });
+  const className = classNames(styles.base, rest.className);
   return (
     <>
       {asCurrency ? (

@@ -1,6 +1,7 @@
 import { defineConfig } from "cypress";
 
 export default defineConfig({
+  projectId: 'jdzxgp',
   component: {
     devServer: {
       framework: "next",

@@ -1,5 +1,5 @@
 .button {
-  @apply rounded-lg py-[14px] px-6 text-sm font-semibold w-auto;
+  @apply rounded-lg p-[14px] text-sm font-semibold w-auto;
 }
 
 .icon {
@@ -8,22 +8,29 @@
 }
 
 .button__withTextUnderIcon {
-  @apply font-normal flex flex-col justify-center items-center text-sm;
+  @apply font-normal flex flex-col justify-center items-center text-sm w-full;
   div:last-child {
     @apply bg-transparent mt-[6px];
   }
 }
 
 .text__primary {
-  @apply text-sm font-semibold border-none text-purple-600;
-}
-
-.neutral {
-  @apply bg-gray-100 text-gray-600 border border-[#D0D5DD];
+  @apply text-sm font-semibold border-none;
 }
 
 .primary {
-  @apply bg-purple-600 text-white;
+  background: var(--filled-button-container);
+  color: var(--filled-button-text);
+  &:hover {
+    background-color: var(--filled-button-hover);
+  }
+  &:active {
+    background-color: var(--filled-button-press);
+  }
+  &:disabled {
+    background-color: var(--filled-button-disabled-container);
+    color: var(--filled-button-disabled-text);
+  }
 }
 
 .tonal {
@@ -31,7 +38,13 @@
 }
 
 .delete {
-  @apply bg-red-50 text-red-600;
+  color: var(--error-button-content);
+  &:hover {
+    background-color: var(--error-button-hover);
+  }
+  &:active {
+    background-color: var(--error-button-press);
+  }
 }
 
 .dark {
@@ -39,5 +52,5 @@
 }
 
 .none {
-  @apply bg-transparent text-current rounded-none;
+  @apply bg-transparent text-current rounded-none p-0 w-auto;
 }

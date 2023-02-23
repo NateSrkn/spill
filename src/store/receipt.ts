@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { getDate } from "../utils";
 
 export interface Item {
   id: number;
@@ -7,9 +6,10 @@ export interface Item {
   value: number;
   include: Include;
   shared: boolean;
+  quantity: number;
 }
 
-export type Include = Record<number, boolean>;
+export type Include = Record<string, boolean>;
 
 export interface Person {
   id: number;
@@ -21,7 +21,6 @@ export interface Receipt {
   avatar: string;
   tax: number;
   tip: number;
-  date: string;
   items: Item[];
   people: Person[];
   updateMeta: UpdateReceiptMeta;
@@ -56,8 +55,7 @@ const initialReceipt = {
 
 export const useReceiptStore = create<Receipt>((set) => ({
   ...initialReceipt,
-  date: getDate(),
-  reset: () => set({ ...initialReceipt, date: getDate() }),
+  reset: () => set({ ...initialReceipt }),
   updateMeta: (name, value) => set(() => ({ [name]: value })),
 
   addPerson: () =>

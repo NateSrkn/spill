@@ -1,6 +1,5 @@
 import {
   currencyFormatter,
-  formatDateForDisplay,
   FullBreakdown,
   getFirstNameAndInitial,
   getInitials,
@@ -20,7 +19,6 @@ export const IndividualBreakdown = ({
   const people = useReceiptStore((state) => state.people);
   const title = useReceiptStore((state) => state.title);
   const avatar = useReceiptStore((state) => state.avatar);
-  const date = useReceiptStore((state) => state.date);
   const groupSize = Object.keys(calculatedBreakdown.perPerson).length;
   return (
     <ul className="hz-scroll gap-4">
@@ -33,7 +31,6 @@ export const IndividualBreakdown = ({
           avatar={avatar || getInitials(title)}
           groupSize={groupSize}
           title={title}
-          date={date}
         />
       ))}
     </ul>
@@ -46,7 +43,6 @@ interface PersonCardProps {
   avatar: string;
   groupSize: number;
   title: string;
-  date: string;
   setSelector: (value: string) => void;
 }
 
@@ -56,7 +52,6 @@ const PersonCard = ({
   avatar,
   groupSize,
   title,
-  date,
   setSelector,
 }: PersonCardProps) => {
   const scrollRef = useRef<HTMLLIElement>(null);
@@ -91,13 +86,13 @@ const PersonCard = ({
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-[85%,1fr]">
           <div className="w-full">
-            <h2 className="text-3xl truncate">
+            <h2 className="main-header truncate">
               {getFirstNameAndInitial(person.name)}
             </h2>
-            <p className="text-[#D0D5DD]">Shared with {groupSize} people</p>
+            <p className="subtext">Shared with {groupSize} people</p>
           </div>
           <div
-            className={classNames("flex-shrink-0 avatar", {
+            className={classNames("flex-shrink-0 avatar neutral", {
               emoji: avatar,
               text: !avatar,
             })}
@@ -123,17 +118,16 @@ const PersonCard = ({
               {currencyFormatter.format(breakdown?.shared || 0)}
             </div>
           </div>
-          <div className="flex justify-between items-center text-white text-xl">
+          <div className="flex justify-between items-center subtext text-xl">
             <div className="truncate">Total</div>
             <div className="truncate">
               {currencyFormatter.format(breakdown?.gross || 0)}
             </div>
           </div>
         </div>
-        <hr className="border-[#667085] border-1" />
-        <div className="text-[#667085] flex justify-between">
+        <hr className="border-1" />
+        <div className="subtext flex justify-between">
           <div>{title}</div>
-          <div>{date ? formatDateForDisplay(date) : ""}</div>
         </div>
       </div>
     </li>

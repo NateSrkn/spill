@@ -60,6 +60,7 @@ export const toPascalCase = (str: string) =>
 
 export const calculateTax = (amount: number, percent: number) =>
   amount * (percent / 100);
+
 export const calculateTaxPercent = (subtotal: number, tax: number) =>
   (tax / subtotal) * 100;
 
@@ -68,9 +69,10 @@ const getRelatedItems = (items: Item[], id: number) =>
 
 export const calculateBreakdown = (receipt: Receipt): FullBreakdown => {
   const subtotal = receipt.items.reduce((sum, item) => {
-    const include = Object.keys(item.include).length;
-    if (include) {
-      return item.value + sum;
+    const includeSize = Object.keys(item.include).filter((i) => i).length;
+    const value = item.value * item.quantity;
+    if (includeSize) {
+      return value + sum;
     }
     return sum;
   }, 0);
@@ -130,8 +132,8 @@ export const calculateBreakdown = (receipt: Receipt): FullBreakdown => {
 };
 
 export enum BillSplitModesEnum {
-  TOTAL = "TOTAL",
-  INDIVIDUAL = "INDIVIDUAL",
+  SUMMARY = "SUMMARY",
+  BREAKDOWN = "BREAKDOWN",
 }
 
 export type FullBreakdown = {
