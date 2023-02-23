@@ -23,7 +23,7 @@ export const Items = () => {
     <section className="grouped-block flex-col">
       <h2 className="subheader pb-3">Items</h2>
       {items.length ? (
-        <ul className="divide-y-[1px] divide-[var(--outline)] py-3">
+        <ul className="divide-y-[1px] divide-[var(--outline)] pb-3">
           {items.map((item) => (
             <ListItem key={item.id} item={item} people={people} />
           ))}
@@ -56,7 +56,7 @@ const ListItem = ({ item, people }: { item: Item; people: any }) => {
     return base;
   };
   return (
-    <li className="flex flex-col gap-3 pb-3">
+    <li className="flex flex-col gap-3 py-3">
       <div className="flex gap-4 justify-between items-center">
         <div className="truncate">
           <h4 className="subtext-header truncate">{item.title}</h4>
