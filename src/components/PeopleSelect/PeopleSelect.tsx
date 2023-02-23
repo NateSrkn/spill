@@ -76,7 +76,7 @@ export const PeopleSelect = ({
                 type="checkbox"
                 className="form-checkbox"
                 name={`include[${person.id}]`}
-                value={include[person.id]}
+                value={include[person.id] as any}
                 checked={include[person.id]}
                 onChange={handleChange}
               />
