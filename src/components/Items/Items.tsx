@@ -2,7 +2,7 @@ import { ItemDialog } from "../ItemDialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Button, ButtonColorVariants, ButtonTypeVariant } from "../Button";
 import { FiEdit, FiMoreVertical, FiTrash, FiUsers } from "react-icons/fi";
-import { Item, Item, Person, useReceiptStore } from "../../store";
+import { Item, Person, useReceiptStore } from "../../store";
 import { useState } from "react";
 import {
   currencyFormatter,
@@ -25,7 +25,7 @@ export const Items = () => {
       {items.length ? (
         <ul className="divide-y-[1px] divide-[var(--outline)] pb-3">
           {items.map((item) => (
-            <Item key={item.id} item={item} people={people} />
+            <ListItem key={item.id} item={item} people={people} />
           ))}
         </ul>
       ) : null}
@@ -43,7 +43,7 @@ export const Items = () => {
   );
 };
 
-const Item = ({ item, people }: { item: Item; people: any }) => {
+const ListItem = ({ item, people }: { item: Item; people: any }) => {
   const removeItem = useReceiptStore((state) => state.removeItem);
   const getCostDisplayText = (item: Item) => {
     let base = currencyFormatter.format(item.value);
