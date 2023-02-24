@@ -75,17 +75,6 @@
 
   @apply rounded-lg p-4 text-left flex gap-3 transition-all duration-100;
 
-  input[type="checkbox"] {
-    @apply mt-[2px] h-5 w-5 rounded;
-    border: var(--border-width) solid var(--outline);
-    background-color: transparent;
-    &:checked {
-      @apply outline-none ring-0;
-      background-color: var(--primary-container-content);
-      border-color: var(--primary-container-content);
-    }
-  }
-
   label {
     @apply font-medium;
   }
