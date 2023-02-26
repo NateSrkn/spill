@@ -54,7 +54,12 @@ export const ItemDialog = React.forwardRef(function ItemDialog(
   const getItemTotalCost = ({ shared, value, groupSize }: CostParams) =>
     currencyFormatter.format(shared ? value : value * groupSize);
   return (
-    <Dialog trigger={Trigger} open={open} onOpenChange={handleOpenChange}>
+    <Dialog
+      trigger={Trigger}
+      open={open}
+      onOpenChange={handleOpenChange}
+      ref={ref}
+    >
       <Formik
         initialValues={initialItem}
         validate={(values) => {
@@ -91,7 +96,7 @@ export const ItemDialog = React.forwardRef(function ItemDialog(
           isValid,
         }) => (
           <form onSubmit={handleSubmit} className={styles.innerContent}>
-            <Title className={styles.title}>
+            <Title className={styles.title} tabIndex={0}>
               {isEdit ? "Edit Item" : "Add Item"}
             </Title>
             <section className="flex flex-col gap-4 mb-20">
