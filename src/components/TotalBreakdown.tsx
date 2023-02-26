@@ -5,9 +5,8 @@ import {
   getFirstNameAndInitial,
   FullBreakdown,
   currencyFormatter,
-  getInitials,
 } from "$/utils";
-import Avatar from "./Avatar/Avatar";
+import { Avatar } from "./Avatar";
 
 export const TotalBreakdown = ({
   calculatedBreakdown,

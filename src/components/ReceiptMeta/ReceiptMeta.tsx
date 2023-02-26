@@ -1,6 +1,5 @@
 import { Receipt } from "../../store";
-import { getInitials } from "../../utils";
-import Avatar from "../Avatar/Avatar";
+import { Avatar } from "../Avatar";
 import { Input } from "../Input";
 
 export const ReceiptMeta = ({

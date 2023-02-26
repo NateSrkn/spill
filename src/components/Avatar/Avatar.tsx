@@ -29,7 +29,7 @@ interface AvatarProps extends VariantProps<typeof avatar> {
   name: string;
 }
 
-const Avatar = ({ name, colors, size }: AvatarProps) => {
+export const Avatar = ({ name, colors, size }: AvatarProps) => {
   const emoji = name.match(regexpEmojiPresentation);
   const initials = getInitials(
     name.replace(regexpEmojiPresentation, "").trim()

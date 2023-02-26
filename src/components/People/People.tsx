@@ -1,7 +1,7 @@
-import { FiMinus, FiPlus, FiTrash2, FiUsers, FiX } from "react-icons/fi";
+import { FiMinus, FiPlus, FiTrash2, FiUsers } from "react-icons/fi";
 import { Person, useReceiptStore } from "../../store";
-import { getGroupSize, getInitials } from "../../utils";
-import Avatar from "../Avatar/Avatar";
+
+import { Avatar } from "../Avatar";
 import { Button, ButtonColorVariants, ButtonTypeVariant } from "../Button";
 import { Input } from "../Input";
 import styles from "./People.module.scss";

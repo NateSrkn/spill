@@ -2,12 +2,11 @@ import {
   currencyFormatter,
   FullBreakdown,
   getFirstNameAndInitial,
-  getInitials,
   PerPersonBreakdown,
 } from "$/utils";
 import { useEffect, useRef } from "react";
 import { Person, useReceiptStore } from "../store";
-import Avatar from "./Avatar/Avatar";
+import { Avatar } from "./Avatar";
 
 export const IndividualBreakdown = ({
   calculatedBreakdown,
@@ -18,7 +17,6 @@ export const IndividualBreakdown = ({
 }) => {
   const people = useReceiptStore((state) => state.people);
   const title = useReceiptStore((state) => state.title);
-  const avatar = useReceiptStore((state) => state.avatar);
   const groupSize = Object.keys(calculatedBreakdown.perPerson).length;
   return (
     <ul className="hz-scroll gap-4">
