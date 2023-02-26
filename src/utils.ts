@@ -1,8 +1,20 @@
 import html2canvas from "html2canvas";
 import { Receipt, Item } from "./store";
 
+export const regexpEmojiPresentation = /[\p{Emoji}\u200d]+/gu;
+
+const cleanString = (string: string) =>
+  string
+    ? string
+        .normalize("NFKD")
+        .replace(/[^\x00-\x7F]/g, "")
+        .trim()
+        .replace(/\s+/g, " ")
+    : "";
+
 export const getInitials = (name: string) => {
-  const names = name ? name.split(" ") : [];
+  const cleanedName = cleanString(name);
+  const names = cleanedName.split(" ");
   if (names.length > 1) {
     return (
       names[0].charAt(0).toLocaleUpperCase() +
@@ -11,10 +23,12 @@ export const getInitials = (name: string) => {
   }
   return name ? name.charAt(0) : "";
 };
+
 export const getFirstNameAndInitial = (name: string) => {
-  const names = name ? name.trim().split(" ") : [];
+  const cleanedName = cleanString(name);
+  const names = cleanedName.split(" ");
   if (names.length > 1) {
-    return `${names[0]} ${names[names.length - 1].charAt(0)}.`;
+    return `${names[0]} ${names[names.length - 1].charAt(0)}`;
   }
   return name ? name : "";
 };
@@ -69,7 +83,7 @@ const getRelatedItems = (items: Item[], id: number) =>
 
 export const calculateBreakdown = (receipt: Receipt): FullBreakdown => {
   const subtotal = receipt.items.reduce((sum, item) => {
-    const includeSize = Object.keys(item.include).filter((i) => i).length;
+    const includeSize = getGroupSize(item.include);
     const value = item.shared ? item.value : item.value * includeSize;
     if (includeSize) {
       return value + sum;
@@ -95,9 +109,7 @@ export const calculateBreakdown = (receipt: Receipt): FullBreakdown => {
       formattedTotal: string;
     }> = [];
     const individualTotal = items.reduce((sum, item) => {
-      const sharedBetweenCount = Object.values(item.include).filter(
-        (i) => i
-      ).length;
+      const sharedBetweenCount = getGroupSize(item.include);
       const value = item.value;
       const total = item.shared ? item.value / sharedBetweenCount : value;
       simplifiedItems.push({

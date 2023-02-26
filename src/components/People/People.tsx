@@ -1,6 +1,7 @@
 import { FiMinus, FiPlus, FiTrash2, FiUsers, FiX } from "react-icons/fi";
-import { useReceiptStore } from "../../store";
+import { Person, useReceiptStore } from "../../store";
 import { getGroupSize, getInitials } from "../../utils";
+import Avatar from "../Avatar/Avatar";
 import { Button, ButtonColorVariants, ButtonTypeVariant } from "../Button";
 import { Input } from "../Input";
 import styles from "./People.module.scss";
@@ -62,42 +63,49 @@ export const People = () => {
       </header>
       <ul className="flex flex-col gap-3 ">
         {people.map((person, index) => (
-          <div
-            key={person.id}
-            className={styles.person}
-            data-cy={`person-${index}`}
-          >
-            <div
-              className="avatar flex-shrink-0 tonal"
-              style={
-                {
-                  "--avatar-size": "40px",
-                } as React.CSSProperties
-              }
-            >
-              {getInitials(person.name)}
-            </div>
-            <Input
-              value={person.name}
-              name="name"
-              type="text"
-              handleChange={(_name, value) => updatePerson(person.id, value)}
+          <li key={person.id} data-cy={`person-${index}`}>
+            <Person
+              person={person}
+              updatePerson={updatePerson}
+              removePerson={removePerson}
             />
-            <Button
-              buttonVariant={ButtonTypeVariant.ICON}
-              colorVariant={ButtonColorVariants.NONE}
-              onClick={() => removePerson(person.id)}
-              style={
-                {
-                  "--icon-size": "32px",
-                } as React.CSSProperties
-              }
-            >
-              <FiTrash2 />
-            </Button>
-          </div>
+          </li>
         ))}
       </ul>
     </section>
+  );
+};
+
+const Person = ({
+  person,
+  updatePerson,
+  removePerson,
+}: {
+  person: Person;
+  updatePerson: (id: number, value: any) => void;
+  removePerson: (id: number) => void;
+}) => {
+  return (
+    <div className={styles.person}>
+      <Avatar name={person.name} size="small" colors="tonal" />
+      <Input
+        value={person.name}
+        name="name"
+        type="text"
+        handleChange={(_name, value) => updatePerson(person.id, value)}
+      />
+      <Button
+        buttonVariant={ButtonTypeVariant.ICON}
+        colorVariant={ButtonColorVariants.NONE}
+        onClick={() => removePerson(person.id)}
+        style={
+          {
+            "--icon-size": "32px",
+          } as React.CSSProperties
+        }
+      >
+        <FiTrash2 />
+      </Button>
+    </div>
   );
 };

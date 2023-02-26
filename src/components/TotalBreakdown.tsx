@@ -7,6 +7,7 @@ import {
   currencyFormatter,
   getInitials,
 } from "$/utils";
+import Avatar from "./Avatar/Avatar";
 
 export const TotalBreakdown = ({
   calculatedBreakdown,
@@ -27,14 +28,7 @@ export const TotalBreakdown = ({
               Shared with {receipt.people.length} people
             </p>
           </div>
-          <div
-            className={classNames("flex-shrink-0 avatar neutral", {
-              emoji: receipt.avatar,
-              text: !receipt.avatar,
-            })}
-          >
-            {receipt.avatar || getInitials(receipt.title)}
-          </div>
+          <Avatar name={receipt.title} />
         </div>
         <div className="w-full grid grid-cols-2 gap-2">
           {receipt.people.map((person) => (

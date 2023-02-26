@@ -32,7 +32,7 @@ describe("JaJaJa", () => {
     cy.viewport("macbook-16");
     cy.visit("http://localhost:3000");
     cy.get("input[name='title']").as("titleInput").should("exist");
-    cy.get("@titleInput").type("JaJaJa");
+    cy.get("@titleInput").type("JaJaJa 🌮");
     cy.dataCy("addItemButton").as("addItemButton");
     cy.get("#People").as("peopleSection");
     cy.get("@peopleSection").should("exist");
@@ -82,7 +82,7 @@ describe("Bearded Lady", () => {
   it("passes", () => {
     cy.visit("http://localhost:3000");
     cy.get("input[name='title']").as("titleInput").should("exist");
-    cy.get("@titleInput").type("Bearded Lady");
+    cy.get("@titleInput").type("Bearded Lady 🧔🏼‍♀️");
     cy.dataCy("addItemButton").as("addItemButton");
     cy.get("#People").as("peopleSection");
     cy.get("@peopleSection").should("exist");
