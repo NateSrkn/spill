@@ -2,12 +2,11 @@ import {
   currencyFormatter,
   FullBreakdown,
   getFirstNameAndInitial,
-  getInitials,
   PerPersonBreakdown,
 } from "$/utils";
-import classNames from "classnames";
 import { useEffect, useRef } from "react";
 import { Person, useReceiptStore } from "../store";
+import { Avatar } from "./Avatar";
 
 export const IndividualBreakdown = ({
   calculatedBreakdown,
@@ -18,7 +17,6 @@ export const IndividualBreakdown = ({
 }) => {
   const people = useReceiptStore((state) => state.people);
   const title = useReceiptStore((state) => state.title);
-  const avatar = useReceiptStore((state) => state.avatar);
   const groupSize = Object.keys(calculatedBreakdown.perPerson).length;
   return (
     <ul className="hz-scroll gap-4">
@@ -28,7 +26,7 @@ export const IndividualBreakdown = ({
           key={person.id}
           person={person}
           breakdown={calculatedBreakdown.perPerson[person.id]}
-          avatar={avatar || getInitials(title)}
+          avatar={title}
           groupSize={groupSize}
           title={title}
         />
@@ -91,14 +89,7 @@ const PersonCard = ({
             </h2>
             <p className="subtext">Shared with {groupSize} people</p>
           </div>
-          <div
-            className={classNames("flex-shrink-0 avatar neutral", {
-              emoji: avatar,
-              text: !avatar,
-            })}
-          >
-            {avatar}
-          </div>
+          <Avatar name={avatar} />
         </div>
         <div className="w-full flex flex-col gap-4 text-[#667085]">
           {breakdown?.items.length

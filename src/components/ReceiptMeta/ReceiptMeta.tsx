@@ -1,5 +1,5 @@
 import { Receipt } from "../../store";
-import { getInitials } from "../../utils";
+import { Avatar } from "../Avatar";
 import { Input } from "../Input";
 
 export const ReceiptMeta = ({
@@ -14,16 +14,7 @@ export const ReceiptMeta = ({
 }) => {
   return (
     <section className="grouped-block justify-center items-center gap-2">
-      <div
-        className="avatar neutral"
-        style={
-          {
-            "--font-size": receipt.avatar ? "32px" : "20px",
-          } as React.CSSProperties
-        }
-      >
-        {receipt.avatar || getInitials(receipt.title)}
-      </div>
+      <Avatar name={receipt.title} />
       <label className="sr-only" htmlFor="title">
         Event Title
       </label>

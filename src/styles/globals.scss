@@ -178,7 +178,8 @@
 
   .avatar {
     --avatar-size: 64px;
-    @apply rounded-full flex justify-center items-center relative font-normal h-[var(--avatar-size)] w-[var(--avatar-size)] text-[length:calc(var(--avatar-size)/3)];
+    --font-size: 36px;
+    @apply rounded-full flex justify-center items-center relative font-normal;
   }
 
   hr {
