@@ -39,7 +39,7 @@
 }
 
 .title {
-  @apply text-2xl font-medium pb-4;
+  @apply text-2xl font-medium pb-4 focus:outline-none;
 }
 
 .fieldset {

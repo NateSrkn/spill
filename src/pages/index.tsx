@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>{receipt.title + " | Spill"}</title>
+        <title>Spill</title>
         <meta
           name="description"
           content="Spill is the easiest way to split the bill with your friends"
