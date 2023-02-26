@@ -54,12 +54,7 @@ export const ItemDialog = React.forwardRef(function ItemDialog(
   const getItemTotalCost = ({ shared, value, groupSize }: CostParams) =>
     currencyFormatter.format(shared ? value : value * groupSize);
   return (
-    <Dialog
-      trigger={Trigger}
-      open={open}
-      onOpenChange={handleOpenChange}
-      ref={ref}
-    >
+    <Dialog trigger={Trigger} open={open} onOpenChange={handleOpenChange}>
       <Formik
         initialValues={initialItem}
         validate={(values) => {
