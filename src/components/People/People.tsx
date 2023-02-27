@@ -21,7 +21,7 @@ export const People = () => {
     removePerson(people[people.length - 1].id);
   };
   return (
-    <section className="grouped-block flex-col gap-6 " id="People">
+    <section className="grouped-block flex-col gap-6" id="People">
       <header className={styles.header}>
         <h2 className="subheader">People</h2>
         <div className={styles.counter}>

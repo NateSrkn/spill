@@ -4,10 +4,11 @@
 
 @layer base {
   :root {
+    --max-width-body: 798px;
     --primary-font: theme(fontFamily.sans);
     --border-width: theme(borderWidth.DEFAULT);
     --background: theme(colors.white);
-    --background-variant: theme(colors.zinc.100);
+    --background-variant: theme(colors.zinc.200);
     --primary-text: theme(colors.zinc.900);
     --secondary-text: theme(colors.zinc.700);
     --neutral-container: theme(colors.zinc.100);
@@ -117,17 +118,15 @@
     min-height: 100vh;
   }
 
-  .wrapper {
-    background-color: var(--background);
-  }
-
   .grouped-block {
     background-color: var(--background);
-    border: var(--border-width) solid var(--outline);
     padding: var(--padding-md);
     border-radius: var(--rounded-md);
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 48rem;
+    max-width: 0 auto;
   }
 
   h1,
@@ -182,7 +181,7 @@
   .avatar {
     --avatar-size: 64px;
     --font-size: 36px;
-    @apply rounded-full flex justify-center items-center relative font-normal;
+    @apply rounded-full flex justify-center items-center font-normal;
   }
 
   hr {

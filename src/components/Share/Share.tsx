@@ -66,7 +66,7 @@ export const Share = ({ receipt }: { receipt: Receipt }) => {
   };
 
   return (
-    <section className={styles.share}>
+    <>
       <h4 className={styles.toggleHeader}>Your bill, spilled</h4>
       <ToggleGroup
         billSplitMode={billSplitMode}
@@ -93,7 +93,10 @@ export const Share = ({ receipt }: { receipt: Receipt }) => {
           <div>Save Image</div>
         </Button>
         <Button
-          onClick={resetReceipt}
+          onClick={() => {
+            resetReceipt();
+            window.scrollTo({ top: 0 });
+          }}
           data-cy="resetReceipt"
           colors="none"
           intent="none"
@@ -107,7 +110,7 @@ export const Share = ({ receipt }: { receipt: Receipt }) => {
           <div>Start Over</div>
         </Button>
       </section>
-    </section>
+    </>
   );
 };
 

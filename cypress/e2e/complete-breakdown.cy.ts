@@ -9,29 +9,12 @@ type ItemProps = {
   selectAll?: boolean;
 };
 
-const addItem = ({
-  title,
-  value,
-  quantity = 1,
-  isShared = false,
-  selectAll = false,
-}: ItemProps) => {
-  cy.dataCy("addInputTitle").type(title);
-  cy.dataCy("addInputValue").type(value);
-  cy.dataCy("addInputQuantity").type(quantity.toString());
-  if (isShared) {
-    cy.dataCy("sharedSelect").click();
-  }
-  if (selectAll) {
-    cy.dataCy("selectAll").click();
-  }
-};
-
 describe("JaJaJa", () => {
   it("passes", () => {
-    cy.viewport("macbook-16");
+    cy.viewport("iphone-xr");
     cy.visit("http://localhost:3000");
     cy.get("input[name='title']").as("titleInput").should("exist");
+
     cy.get("@titleInput").type("JaJaJa 🌮");
     cy.dataCy("addItemButton").as("addItemButton");
     cy.get("#People").as("peopleSection");
@@ -80,6 +63,7 @@ describe("JaJaJa", () => {
 });
 describe("Bearded Lady", () => {
   it("passes", () => {
+    cy.viewport("iphone-xr");
     cy.visit("http://localhost:3000");
     cy.get("input[name='title']").as("titleInput").should("exist");
     cy.get("@titleInput").type("Bearded Lady 🧔🏼‍♀️");

@@ -1,8 +1,10 @@
+import Header from "./header";
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      {children}
-      <footer></footer>
+      <Header />
+      <main>{children}</main>
     </>
   );
 }
