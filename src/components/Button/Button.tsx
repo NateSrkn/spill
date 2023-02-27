@@ -1,75 +1,53 @@
-import classNames from "classnames";
+import { cva, type VariantProps } from "class-variance-authority";
 import React, { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
-import { IconBaseProps } from "react-icons";
 import styles from "./Button.module.scss";
-export enum ButtonColorVariants {
-  NEUTRAL = "neutral",
-  PRIMARY = "primary",
-  TONAL = "tonal",
-  DELETE = "delete",
-  DARK = "dark",
-  NONE = "none",
-}
-export enum ButtonTypeVariant {
-  DEFAULT = "button",
-  TEXT = "text",
-  ICON = "icon",
-  ICON_BUTTON_WITH_TEXT = "button__withTextUnderIcon",
+
+export interface ButtonProps
+  extends VariantProps<typeof btn>,
+    DetailedHTMLProps<
+      ButtonHTMLAttributes<HTMLButtonElement>,
+      HTMLButtonElement
+    > {
+  children?: React.ReactNode;
 }
 
-export type ButtonProps = {
-  buttonVariant?: ButtonTypeVariant;
-  colorVariant?: ButtonColorVariants;
-  icon?: React.FunctionComponent<IconBaseProps>;
-  children?: React.ReactNode;
-} & DetailedHTMLProps<
-  ButtonHTMLAttributes<HTMLButtonElement>,
-  HTMLButtonElement
->;
+export const btn = cva(styles.btn, {
+  variants: {
+    intent: {
+      icon: styles["btn-icon"],
+      default: styles["btn-default"],
+      none: "font-normal flex-col",
+    },
+    size: {
+      none: [],
+      sm: styles["btn-sm"],
+      lg: styles["btn-lg"],
+    },
+    colors: {
+      destructive: styles.destructive,
+      tertiary: styles.tertiary,
+      neutral: styles.neutral,
+      primary: styles.primary,
+      none: [],
+    },
+  },
+  defaultVariants: {
+    colors: "neutral",
+    size: "lg",
+    intent: "default",
+  },
+});
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   function Button(
-    {
-      buttonVariant = ButtonTypeVariant.DEFAULT,
-      colorVariant = ButtonColorVariants.NEUTRAL,
-      icon: Icon,
-      children,
-      ...rest
-    }: ButtonProps,
+    { children, intent, size, colors, ...rest }: ButtonProps,
     ref
   ) {
-    const utilityName = `${buttonVariant}__${colorVariant}`;
-    const className =
-      buttonVariant === ButtonTypeVariant.TEXT
-        ? classNames(styles[utilityName], rest.className)
-        : classNames(
-            styles[buttonVariant],
-            styles[colorVariant],
-            rest.className
-          );
-    switch (buttonVariant) {
-      case ButtonTypeVariant.ICON_BUTTON_WITH_TEXT: {
-        return (
-          <button {...rest} className={styles[buttonVariant]} ref={ref}>
-            <div className={classNames(styles.icon, styles[colorVariant])}>
-              {Icon ? <Icon /> : null}
-            </div>
-            <div className={styles[colorVariant]}>{children}</div>
-          </button>
-        );
-      }
-      case ButtonTypeVariant.TEXT: {
-        <button {...rest} className={className} ref={ref}>
-          <span className="bg-transparent">{children}</span>
-        </button>;
-      }
-      default: {
-        return (
-          <button {...rest} className={className} ref={ref}>
-            {children}
-          </button>
-        );
-      }
-    }
+    const className = btn({ intent, size, colors });
+    return (
+      <button {...rest} className={`${className} group`} ref={ref}>
+        {children}
+      </button>
+    );
   }
 );

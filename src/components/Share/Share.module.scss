@@ -12,16 +12,6 @@
 
 .toggleGroup {
   color: var(--secondary-text);
+  width: 100%;
   @apply flex font-medium text-base px-4;
-}
-
-.toggleButton {
-  border: var(--border-width) solid var(--outline);
-
-  @apply py-[14px] px-4 w-full last:border-l-0 transition-colors;
-  &.active {
-    color: var(--filled-button-text);
-    background-color: var(--filled-button-container);
-    border: var(--border-width) solid var(--filled-button-container);
-  }
 }

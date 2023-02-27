@@ -2,7 +2,7 @@ import { FiMinus, FiPlus, FiTrash2, FiUsers } from "react-icons/fi";
 import { Person, useReceiptStore } from "../../store";
 
 import { Avatar } from "../Avatar";
-import { Button, ButtonColorVariants, ButtonTypeVariant } from "../Button";
+import { Button } from "../Button";
 import { Input } from "../Input";
 import styles from "./People.module.scss";
 
@@ -28,36 +28,24 @@ export const People = () => {
           <Button
             name="decrease"
             aria-label="decrease"
-            buttonVariant={ButtonTypeVariant.ICON}
-            colorVariant={ButtonColorVariants.NONE}
+            intent="icon"
             onClick={handleDecreaseGroupSize}
-            style={
-              {
-                "--icon-size": "34px",
-              } as React.CSSProperties
-            }
           >
-            <FiMinus />
+            <FiMinus size={24} />
           </Button>
           <div className="badge neutral">
             <span>
-              <FiUsers />
+              <FiUsers size={16} />
             </span>
             <span>{people.length}</span>
           </div>
           <Button
             name="increase"
             aria-label="increase"
-            buttonVariant={ButtonTypeVariant.ICON}
-            colorVariant={ButtonColorVariants.NONE}
+            intent="icon"
             onClick={handleIncreaseGroupSize}
-            style={
-              {
-                "--icon-size": "34px",
-              } as React.CSSProperties
-            }
           >
-            <FiPlus />
+            <FiPlus size={24} />
           </Button>
         </div>
       </header>
@@ -94,17 +82,8 @@ const Person = ({
         type="text"
         handleChange={(_name, value) => updatePerson(person.id, value)}
       />
-      <Button
-        buttonVariant={ButtonTypeVariant.ICON}
-        colorVariant={ButtonColorVariants.NONE}
-        onClick={() => removePerson(person.id)}
-        style={
-          {
-            "--icon-size": "32px",
-          } as React.CSSProperties
-        }
-      >
-        <FiTrash2 />
+      <Button intent="icon" onClick={() => removePerson(person.id)}>
+        <FiTrash2 size={24} />
       </Button>
     </div>
   );

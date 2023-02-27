@@ -1,7 +1,6 @@
 import React from "react";
 import { Close, Title } from "@radix-ui/react-dialog";
 import { Button } from "../Button";
-import { ButtonColorVariants, ButtonTypeVariant } from "../Button";
 import { Item } from "../../store";
 import styles from "./ItemDialog.module.scss";
 import { Input } from "../Input";
@@ -181,17 +180,12 @@ export const ItemDialog = React.forwardRef(function ItemDialog(
               <Close asChild>
                 <Button
                   onClick={() => handleOpenChange(false)}
-                  buttonVariant={ButtonTypeVariant.DEFAULT}
-                  colorVariant={ButtonColorVariants.DELETE}
+                  colors="destructive"
                 >
                   Cancel
                 </Button>
               </Close>
-              <Button
-                colorVariant={ButtonColorVariants.PRIMARY}
-                type="submit"
-                data-cy="item-submit"
-              >
+              <Button type="submit" data-cy="item-submit" colors="primary">
                 Add item (
                 {getItemTotalCost({
                   value: values.value,

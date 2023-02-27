@@ -7,9 +7,6 @@
   .count {
     @apply bg-zinc-100 rounded-lg py-2 px-6 text-center outline-none focus:outline-none tracking-tighter proportional-nums w-[68px] max-w-[68px];
   }
-  button {
-    --icon-size: 32px;
-  }
 }
 
 .person {
