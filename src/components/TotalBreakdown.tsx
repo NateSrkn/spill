@@ -14,7 +14,7 @@ export const TotalBreakdown = ({
   const receipt = useReceiptStore();
 
   return (
-    <section className="grouped-block">
+    <section className="grouped-block" id="summary">
       <div className="flex flex-col gap-4">
         <div className="flex justify-between">
           <div className="w-full">

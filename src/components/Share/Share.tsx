@@ -28,9 +28,7 @@ export const Share = ({ receipt }: { receipt: Receipt }) => {
 
   const shareAsImage = async () => {
     const currentSelector =
-      billSplitMode === BillSplitModesEnum.SUMMARY
-        ? ".snapshot-block"
-        : selector;
+      billSplitMode === BillSplitModesEnum.SUMMARY ? "#summary" : selector;
     const shareBlock = document.querySelector<HTMLElement>(currentSelector);
     if (!shareBlock) return;
     const prevBorderRadius = shareBlock.style.borderRadius;
