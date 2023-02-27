@@ -5,6 +5,7 @@
   color: var(--secondary-text);
   &:focus {
     color: var(--primary-text);
+    outline: none;
   }
 
   @apply rounded-lg p-[12px] focus:ring-1 focus:ring-[var(--primary)]  data-[error="true"]:ring-1 data-[error="true"]:ring-[var(--error)];
