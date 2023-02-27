@@ -9,7 +9,8 @@ import {
   convertToImage,
   toPascalCase,
 } from "../../utils";
-import { Button, ButtonColorVariants, ButtonTypeVariant } from "../Button";
+import { Button } from "../Button";
+import { btn } from "../Button/Button";
 import { IndividualBreakdown } from "../IndividualBreakdown";
 import { TotalBreakdown } from "../TotalBreakdown";
 import styles from "./Share.module.scss";
@@ -82,22 +83,28 @@ export const Share = ({ receipt }: { receipt: Receipt }) => {
       )}
 
       <section className={styles.buttonGroup}>
-        <Button
-          buttonVariant={ButtonTypeVariant.ICON_BUTTON_WITH_TEXT}
-          colorVariant={ButtonColorVariants.NONE}
-          icon={FiDownload}
-          onClick={() => shareAsImage()}
-        >
-          Save Image
+        <Button onClick={() => shareAsImage()} colors="none" intent="none">
+          <div
+            className={btn({ intent: "icon" })}
+            style={{ "--icon-size": "var(--icon-lg)" } as React.CSSProperties}
+          >
+            <FiDownload size={24} />
+          </div>
+          <div>Save Image</div>
         </Button>
         <Button
-          buttonVariant={ButtonTypeVariant.ICON_BUTTON_WITH_TEXT}
-          colorVariant={ButtonColorVariants.NONE}
-          icon={FiRotateCcw}
           onClick={resetReceipt}
           data-cy="resetReceipt"
+          colors="none"
+          intent="none"
         >
-          Start Over
+          <div
+            className={btn({ intent: "icon" })}
+            style={{ "--icon-size": "var(--icon-lg)" } as React.CSSProperties}
+          >
+            <FiRotateCcw size={24} />
+          </div>
+          <div>Start Over</div>
         </Button>
       </section>
     </section>
@@ -116,23 +123,39 @@ const ToggleGroup = ({
       type="single"
       className={styles.toggleGroup}
       defaultValue={BillSplitModesEnum.SUMMARY}
-      onValueChange={(value: BillSplitModesEnum) =>
-        value ? setBillSplitMode(value) : null
-      }
+      onValueChange={(value: BillSplitModesEnum) => {
+        if (value) setBillSplitMode(value);
+      }}
     >
       <ToggleGroupPrimitive.Item
         value={BillSplitModesEnum.SUMMARY}
-        className={classNames(styles.toggleButton, "rounded-l-lg", {
-          [styles.active]: billSplitMode === BillSplitModesEnum.SUMMARY,
-        })}
+        className={classNames(
+          btn({
+            intent: "none",
+            colors:
+              billSplitMode === BillSplitModesEnum.SUMMARY
+                ? "primary"
+                : "neutral",
+            size: "lg",
+          }),
+          "rounded-l-lg border-[var(--outline)] border w-full"
+        )}
       >
         Summary
       </ToggleGroupPrimitive.Item>
       <ToggleGroupPrimitive.Item
         value={BillSplitModesEnum.BREAKDOWN}
-        className={classNames(styles.toggleButton, "rounded-r-lg", {
-          [styles.active]: billSplitMode === BillSplitModesEnum.BREAKDOWN,
-        })}
+        className={classNames(
+          btn({
+            intent: "none",
+            colors:
+              billSplitMode === BillSplitModesEnum.BREAKDOWN
+                ? "primary"
+                : "neutral",
+            size: "lg",
+          }),
+          "rounded-r-lg border-[var(--outline)] border w-full"
+        )}
       >
         Breakdown
       </ToggleGroupPrimitive.Item>

@@ -1,5 +1,3 @@
-import classNames from "classnames";
-
 import { useReceiptStore } from "$/store";
 import {
   getFirstNameAndInitial,
@@ -32,13 +30,13 @@ export const TotalBreakdown = ({
         <div className="w-full grid grid-cols-2 gap-2">
           {receipt.people.map((person) => (
             <div
-              className="flex flex-col p-4 justify-center rounded-lg neutral"
+              className="flex flex-col p-4 justify-center rounded-lg border-[var(--outline)] border"
               key={person.name}
             >
               <div className="font-medium">
                 {getFirstNameAndInitial(person.name)}
               </div>
-              <div className=" truncate subtext">
+              <div className="truncate subtext">
                 {currencyFormatter.format(
                   calculatedBreakdown.perPerson[person.id]?.gross || 0
                 )}

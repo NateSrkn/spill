@@ -19,7 +19,7 @@ export const ReceiptMeta = ({
         Event Title
       </label>
       <Input
-        className="text-center text-3xl max-w-max"
+        className="text-center subheader max-w-max"
         type="text"
         name="title"
         changeOnFocus={false}

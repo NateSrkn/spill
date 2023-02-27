@@ -1,6 +1,6 @@
 import { ItemDialog } from "../ItemDialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { Button, ButtonColorVariants, ButtonTypeVariant } from "../Button";
+import { Button } from "../Button";
 import { FiEdit, FiMoreVertical, FiTrash, FiUsers } from "react-icons/fi";
 import { Item, Person, useReceiptStore } from "../../store";
 import { useState } from "react";
@@ -31,10 +31,7 @@ export const Items = () => {
       ) : null}
       <ItemDialog
         trigger={
-          <Button
-            colorVariant={ButtonColorVariants.PRIMARY}
-            data-cy="addItemButton"
-          >
+          <Button data-cy="addItemButton" colors="primary">
             Add Item
           </Button>
         }
@@ -66,7 +63,7 @@ const ListItem = ({ item, people }: { item: Item; people: any }) => {
           {getGroupSize(item.include) >= 2 ? (
             <div className="badge neutral">
               <span>
-                <FiUsers />
+                <FiUsers size={16} />
               </span>
               <span>{getGroupSize(item.include)}</span>
             </div>
@@ -98,11 +95,8 @@ const ItemDropdown = ({
   return (
     <DropdownMenu.Root open={open} onOpenChange={setOpen}>
       <DropdownMenu.Trigger asChild>
-        <Button
-          buttonVariant={ButtonTypeVariant.ICON}
-          colorVariant={ButtonColorVariants.NONE}
-        >
-          <FiMoreVertical />
+        <Button intent="icon">
+          <FiMoreVertical size={24} />
         </Button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>

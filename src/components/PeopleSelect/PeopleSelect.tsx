@@ -1,7 +1,6 @@
 import classNames from "classnames";
-import { FiCheck } from "react-icons/fi";
-import { getInitials } from "../../utils";
-import { Button, ButtonColorVariants, ButtonTypeVariant } from "../Button";
+
+import { Button } from "../Button";
 import { ChangeEventHandler, useState } from "react";
 import { Include } from "../../store";
 import { FormikErrors, FormikTouched } from "formik";
@@ -37,7 +36,7 @@ export const PeopleSelect = ({
 
   return (
     <fieldset className="flex flex-col gap-2">
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center">
         <label className="subtext-header" htmlFor="included">
           Select People
         </label>
@@ -45,11 +44,11 @@ export const PeopleSelect = ({
           <div className="text-[var(--error)] text-sm">{error}</div>
         ) : null}
         <Button
-          buttonVariant={ButtonTypeVariant.TEXT}
-          colorVariant={ButtonColorVariants.PRIMARY}
           type="button"
           onClick={handleSelectAll}
           data-cy="selectAll"
+          colors="tertiary"
+          size="sm"
         >
           Add all
         </Button>

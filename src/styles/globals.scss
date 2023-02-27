@@ -36,9 +36,9 @@
     --error-button-content: theme(colors.red.800);
     --error-button-hover: rgba(180, 35, 24, 0.06);
     --error-button-press: rgba(180, 35, 24, 0.12);
-    --primary-button-content: var(--primary-container-content);
-    --primary-button-hover: rgba(124, 58, 237, 0.06);
-    --primary-button-press: gba(124, 58, 237, 0.12);
+    --tertiary-button-content: var(--primary-container-content);
+    --tertiary-button-hover: rgba(124, 58, 237, 0.06);
+    --tertiary-button-press: rgba(124, 58, 237, 0.12);
     --selected-content: theme(colors.violet.900);
     --selected-hover: #e5ddfc;
     --selected-press: #ded2fa;
@@ -52,6 +52,9 @@
     --padding-lg: 32px;
 
     --letter-spacing: -0.02em;
+
+    --icon-sm: 32px;
+    --icon-lg: 48px;
   }
 
   [data-theme="dark"] {
@@ -85,9 +88,9 @@
     --error-button-content: theme(colors.red.300);
     --error-button-hover: rgba(248, 113, 113, 0.06);
     --error-button-press: rgba(248, 113, 113, 0.12);
-    --primary-button-content: var(--primary-container-content);
-    --primary-button-hover: rgba(196, 181, 253, 0.06);
-    --primary-button-press: rgba(196, 181, 253, 0.12);
+    --tertiary-button-content: var(--primary-container-content);
+    --tertiary-button-hover: rgba(196, 181, 253, 0.06);
+    --tertiary-button-press: rgba(196, 181, 253, 0.12);
     --selected-content: theme(colors.violet.100);
     --selected-hover: #38225c;
     --selected-press: #422d67;

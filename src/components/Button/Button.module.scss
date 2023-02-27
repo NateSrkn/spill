@@ -1,21 +1,75 @@
-.button {
-  @apply rounded-lg p-[14px] text-sm font-semibold w-auto;
-}
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-.icon {
-  --icon-size: 48px;
-  @apply rounded-full w-[var(--icon-size)] h-[var(--icon-size)] text-[calc(var(--icon-size)/2)]  font-semibold flex justify-center items-center flex-shrink-0;
-}
+  &:focus {
+    outline-color: var(--primary);
+  }
 
-.button__withTextUnderIcon {
-  @apply font-normal flex flex-col justify-center items-center text-sm w-full;
-  div:last-child {
-    @apply bg-transparent mt-[6px];
+  &:hover > .neutral {
+    background-color: var(--tertiary-button-hover);
+  }
+  &:active > .neutral {
+    background-color: var(--tertiary-button-press);
+  }
+  &:focus > .neutral {
+    background-color: var(--tertiary-button-hover);
   }
 }
 
-.text__primary {
-  @apply text-sm font-semibold border-none;
+.btn-sm {
+  padding: 4px 8px;
+}
+
+.btn-lg {
+  padding: 14px;
+}
+
+.btn-icon {
+  --icon-size: var(--icon-sm);
+  border-radius: 9999px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  height: var(--icon-size);
+  width: var(--icon-size);
+  padding: 0;
+}
+
+.btn-default {
+  border-radius: var(--rounded-sm);
+  font-weight: 500;
+}
+
+.neutral {
+  &:hover {
+    background-color: var(--neutral-hover);
+  }
+  &:active {
+    background-color: var(--neutral-press);
+  }
+}
+
+.tertiary {
+  color: var(--tertiary-button-content);
+  &:hover {
+    background-color: var(--tertiary-button-hover);
+  }
+  &:active {
+    background-color: var(--tertiary-button-press);
+  }
+}
+
+.destructive {
+  color: var(--error-button-content);
+  &:hover {
+    background-color: var(--error-button-hover);
+  }
+  &:active {
+    background-color: var(--error-button-press);
+  }
 }
 
 .primary {
@@ -31,26 +85,4 @@
     background-color: var(--filled-button-disabled-container);
     color: var(--filled-button-disabled-text);
   }
-}
-
-.tonal {
-  @apply bg-purple-600 bg-opacity-20 text-purple-600 text-opacity-90;
-}
-
-.delete {
-  color: var(--error-button-content);
-  &:hover {
-    background-color: var(--error-button-hover);
-  }
-  &:active {
-    background-color: var(--error-button-press);
-  }
-}
-
-.dark {
-  @apply bg-[#111825] text-[#D0D5DD];
-}
-
-.none {
-  @apply bg-transparent text-current rounded-none p-0 w-auto;
 }
