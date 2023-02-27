@@ -4,18 +4,18 @@ import { cva, type VariantProps } from "class-variance-authority";
 const avatar = cva("flex-shrink-0 avatar", {
   variants: {
     colors: {
-      tonal: ["tonal"],
-      neutral: ["neutral"],
+      tonal: "tonal",
+      neutral: "neutral",
     },
     size: {
-      small: ["h-[40px] w-[40px]"],
-      large: ["h-[64px] w-[64px]"],
+      small: "h-[40px] w-[40px]",
+      large: "h-[64px] w-[64px]",
     },
     content: {
-      largeEmoji: ["text-4xl"],
-      smallEmoji: ["text-2xl"],
-      largeText: ["text-2xl"],
-      smallText: ["text-sm"],
+      largeEmoji: "text-4xl",
+      smallEmoji: "text-2xl",
+      largeText: "text-2xl",
+      smallText: "text-sm",
     },
   },
   defaultVariants: {

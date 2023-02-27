@@ -77,12 +77,12 @@ const PersonCard = ({
 
   return (
     <li
-      className="snapshot-block"
+      className="grouped-block"
       ref={scrollRef}
       id={`snap-${person.id.toString()}`}
     >
       <div className="flex flex-col gap-4">
-        <div className="grid grid-cols-[85%,1fr]">
+        <div className="flex justify-between">
           <div className="w-full">
             <h2 className="main-header truncate">
               {getFirstNameAndInitial(person.name)}
