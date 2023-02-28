@@ -3,4 +3,9 @@ const nextConfig = {
   reactStrictMode: true,
 };
 
-module.exports = nextConfig;
+const withPWA = require("next-pwa")({
+  dest: "public",
+});
+
+// @ts-ignore
+module.exports = withPWA(nextConfig);
