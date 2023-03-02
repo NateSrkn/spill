@@ -1,7 +1,8 @@
 import { create } from "zustand";
+import { Partialize } from "../utils";
 
 export interface Item {
-  id: number;
+  id: string;
   title: string;
   value: number;
   include: Include;
@@ -25,10 +26,10 @@ export interface Receipt {
   people: Person[];
   updateMeta: UpdateReceiptMeta;
   addPerson: () => void;
-  removePerson: (id: number) => void;
-  updatePerson: (id: number, value: string) => void;
-  addItem: (item: Item) => void;
-  removeItem: (id: number) => void;
+  removePerson: (id: Person["id"]) => void;
+  updatePerson: (id: Person["id"], value: string) => void;
+  addItem: (item: Partialize<Item, "id">) => void;
+  removeItem: (id: Item["id"]) => void;
   updateItem: UpdateItem;
   reset: () => void;
 }
@@ -39,7 +40,7 @@ export type UpdateReceiptMeta = <T extends keyof Receipt>(
 ) => void;
 
 export type UpdateItem = <T extends keyof Item>(
-  id: number,
+  id: Item["id"],
   name: T,
   value: Item[T]
 ) => void;
@@ -83,7 +84,7 @@ export const useReceiptStore = create<Receipt>((set) => ({
 
   addItem: (item) =>
     set((state) => ({
-      items: [...state.items, { ...item, id: Date.now() }],
+      items: [...state.items, { ...item, id: crypto.randomUUID() }],
     })),
 
   removeItem: (id) =>
