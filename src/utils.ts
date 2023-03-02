@@ -72,10 +72,10 @@ export const toPascalCase = (str: string) =>
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join("");
 
-export const calculateTax = (amount: number, percent: number) =>
+export const calculateTotalFromPercent = (amount: number, percent: number) =>
   amount * (percent / 100);
 
-export const calculateTaxPercent = (subtotal: number, tax: number) =>
+export const calculatePercent = (subtotal: number, tax: number) =>
   (tax / subtotal) * 100;
 
 const getRelatedItems = (items: Item[], id: number) =>
@@ -97,15 +97,16 @@ export const calculateBreakdown = (receipt: Receipt): FullBreakdown => {
       taxRate: 0,
       perPerson: [],
     };
-  const taxRate = receipt.tax ? calculateTaxPercent(subtotal, receipt.tax) : 0;
-  const tipSplit = receipt.tip / receipt.people.length;
+  const taxRate = receipt.tax ? calculatePercent(subtotal, receipt.tax) : 0;
+  const tipRate = receipt.tip ? calculatePercent(subtotal, receipt.tip) : 0;
+
   let grossTotal = 0;
   const perPerson = receipt.people.reduce((acc, p) => {
     const items = getRelatedItems(receipt.items, p.id);
     const simplifiedItems: Array<{
       title: string;
       total: number;
-      id: number;
+      id: Item["id"];
       formattedTotal: string;
     }> = [];
     const individualTotal = items.reduce((sum, item) => {
@@ -123,8 +124,9 @@ export const calculateBreakdown = (receipt: Receipt): FullBreakdown => {
       sum += total;
       return sum;
     }, 0);
-    const tax = calculateTax(individualTotal, taxRate);
-    const shared = tax + tipSplit;
+    const tax = calculateTotalFromPercent(individualTotal, taxRate);
+    const tip = calculateTotalFromPercent(individualTotal, tipRate);
+    const shared = tax + tip;
     const gross = individualTotal + shared;
     grossTotal += gross;
     // @ts-ignore

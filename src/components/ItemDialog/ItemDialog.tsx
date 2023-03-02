@@ -7,11 +7,16 @@ import { Input } from "../Input";
 import { Formik } from "formik";
 import { PeopleSelect } from "../PeopleSelect";
 import { useReceiptStore } from "../../store";
-import { currencyFormatter, getGroupSize, PartialRecord } from "../../utils";
+import {
+  currencyFormatter,
+  getGroupSize,
+  Partialize,
+  PartialRecord,
+} from "../../utils";
 import Dialog from "../Dialog/Dialog";
 interface ItemDialogProps {
   trigger: React.ReactNode;
-  initialItem?: Item;
+  initialItem?: Item | Partialize<Item, "id">;
 }
 
 enum SharedStateEnum {
@@ -28,12 +33,11 @@ export const ItemDialog = React.forwardRef(function ItemDialog(
       quantity: 1,
       include: {},
       shared: false,
-      id: -1,
     },
   }: ItemDialogProps,
   ref
 ) {
-  const isEdit = initialItem.id > 0;
+  const isEdit = !!initialItem.id;
   const addItem = useReceiptStore((state) => state.addItem);
   const updateItem = useReceiptStore((state) => state.updateItem);
   const [open, setOpen] = React.useState(false);
